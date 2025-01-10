@@ -89,7 +89,8 @@ jobs:
         run: aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
 
       - name: Update Docker Image in deployment.yaml
-        run: sed -i 's|image: carlohcs/basic-app:latest|image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ env.BUILD_VERSION }}|g' k8s/prod/backend/deployment.yaml
+        run: |
+          sed -i 's|image: carlohcs/basic-app:latest|image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ env.BUILD_VERSION }}|g' k8s/prod/backend/deployment.yaml
 
       - name: Overwrite Kubernetes Secrets
         run: |
