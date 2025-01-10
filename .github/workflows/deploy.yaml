@@ -90,13 +90,13 @@ jobs:
 
       - name: Update Docker Image in deployment.yaml
         run: |
-          sed -i 's|image: carlohcs/basic-app:latest|image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ env.BUILD_VERSION }}|g' k8s/prod/backend/deployment.yaml
+          sed -i 's|image: carlohcs/video-studio|image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ env.BUILD_VERSION }}|g' k8s/prod/backend/deployment.yaml
 
       - name: Overwrite Kubernetes Secrets
         run: |
           kubectl create secret generic secret-video-studio \
             --from-literal=APPLICATION_VERSION=${{ env.BUILD_VERSION }} \
-            --from-literal=APP_IMAGE_VERSION=${{ env.BUILD_VERSION }} \
+            --from-literal=ENABLE_FLYWAY=${{ secrets.ENABLE_FLYWAY }} \
             --from-literal=SPRING_DATASOURCE_URL=jdbc:mysql://${{ env.DB_HOST }}:3306/${{ secrets.DB_NAME }} \
             --from-literal=SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
             --from-literal=SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \

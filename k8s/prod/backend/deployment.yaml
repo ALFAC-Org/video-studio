@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: deployment-video-studio
-          image: carlohcs/basic-app:latest
+          image: carlohcs/video-studio
           ports:
             - containerPort: 8080
           envFrom:
