@@ -90,7 +90,7 @@ jobs:
 
       - name: Overwrite Kubernetes Secrets
         run: |
-          kubectl create secret generic secret-video-studio \
+          kubectl create secret Opaque secret-video-studio \
             --from-literal=APPLICATION_VERSION=${{ env.BUILD_VERSION }} \
             --from-literal=APP_IMAGE_VERSION=${{ env.BUILD_VERSION }} \
             --from-literal=SPRING_DATASOURCE_URL=jdbc:mysql://${{ env.DB_HOST }}:3306/${{ secrets.DB_NAME }} \
