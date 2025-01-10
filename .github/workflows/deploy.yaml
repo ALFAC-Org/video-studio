@@ -8,6 +8,9 @@ on:
         required: false
         default: "latest"
 
+env:
+  BUILD_VERSION: ${{ github.event.inputs.app_image_version || github.sha }}
+
 jobs:
   setup-aws:
     name: Setup AWS
@@ -32,9 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup-aws
     if: success()
-
-    env:
-      BUILD_VERSION: ${{ github.event.inputs.app_image_version || github.sha }}
 
     steps:
       - name: Checkout code
