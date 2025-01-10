@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-video-studio
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: deployment-video-studio
+      labels:
+        app: deployment-video-studio
+    spec:
+      containers:
+        - name: deployment-video-studio
+          image: carlohcs/basic-app:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: cm-video-studio
+            - secretRef:
+                name: secret-video-studio
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+          livenessProbe:
+            httpGet:
+              # path: "/api/v1/health-check"
+              path: "/version"
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+  selector:
+    matchLabels:
+      app: deployment-video-studio
