@@ -20,7 +20,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Update Kube Config
-        run: aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+        run: aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
 
       - name: Kube Apply
         run: |
