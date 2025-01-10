@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: deployment-video-studio
-          image: carlohcs/basic-app:latest
+          image: carlohcs/video-studio
           ports:
             - containerPort: 8080
           envFrom:
@@ -27,13 +27,14 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "1"
-          livenessProbe:
-            httpGet:
-              # path: "/api/v1/health-check"
-              path: "/version"
-              port: 8080
-            initialDelaySeconds: 3
-            periodSeconds: 3
+          # TODO: Adicionar quando estiver com a aplicação oficial
+          # livenessProbe:
+          #   httpGet:
+          #     # path: "/api/v1/health-check"
+          #     path: "/version"
+          #     port: 8080
+          #   initialDelaySeconds: 3
+          #   periodSeconds: 3
   selector:
     matchLabels:
       app: deployment-video-studio

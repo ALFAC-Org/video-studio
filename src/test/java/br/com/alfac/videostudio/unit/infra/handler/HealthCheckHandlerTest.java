@@ -31,9 +31,6 @@ class HealthCheckHandlerTest {
     @Value("${application.version}")
     private String applicationVersion = "1.0.0";
 
-    @Value("${application.database.version}")
-    private String databaseVersion = "1.0.0";
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
