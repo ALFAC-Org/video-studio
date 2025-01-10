@@ -3,6 +3,4 @@ kind: ConfigMap
 metadata:
   name: cm-video-studio
 data:
-  # SPRING_DATASOURCE_URL: outro valor // Quando for na AWS
-  # SPRING_DATASOURCE_URL: jdbc:mysql://svc-db-video-studio:3306/videodb
   PORT: "8080"

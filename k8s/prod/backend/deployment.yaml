@@ -27,6 +27,7 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "1"
+          # TODO: Adicionar quando estiver com a aplicação oficial
           # livenessProbe:
           #   httpGet:
           #     # path: "/api/v1/health-check"
