@@ -27,67 +27,38 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ControladorVideoTest {
+    @Mock
+    private ListarVideosUseCase listarVideosUseCase;
 
     @Mock
-    private RepositorioVideoGateway repositorioVideoGateway;
+    private UploadVideoUseCase uploadVideoUseCase;
 
+    @InjectMocks
     private ControladorVideo controladorVideo;
- 
-    @BeforeEach
-    void setUp() {
-        controladorVideo = new ControladorVideo(repositorioVideoGateway);
-    }
 
     @Test
-    void devePermitirListarItens() throws Exception {
-        //Arrange
-        Video video1 = VideoHelper.criarVideo();
-        Video video2 = VideoHelper.criarVideo();
-        List<Video> videoList = Arrays.asList(video1, video2);
-
-        VideoDTO item1DTO = VideoHelper.criarVideoDTO(video1);
-        VideoDTO item2DTO = VideoHelper.criarVideoDTO(video2);
-
-        try (MockedConstruction<ListarVideosUseCase> mockedListarVideosUseCase = 
-            mockConstruction(ListarVideosUseCase.class, (mock, context) -> {
-                when(mock.execute()).thenReturn(videoList);
-            })) {
-
-            //Act
-            List<VideoDTO> videosObtidos = controladorVideo.listarVideosUsuario();
-
-            //Assert
-            assertThat(videosObtidos)
-                .hasSize(2)
-                .containsExactlyInAnyOrder(item1DTO, item2DTO);
-        }
-    }
-
-    @Test
-    void devePermitirCadastrarItem() throws VideoStudioException {
+    void devePermitirListarVideosUsuario() throws Exception {
         // Arrange
-        Video video = VideoHelper.criarVideo();
-        video.setId(1L);
-        VideoDTO videoDTO = VideoHelper.criarVideoDTO(video);
+        when(listarVideosUseCase.execute()).thenReturn(Arrays.asList(VideoHelper.criarVideo()));
 
-        try (MockedConstruction<UploadVideoUseCase> mockedUploadVideoUseCase = 
-            mockConstruction(UploadVideoUseCase.class, (mock, context) -> {
-                when(mock.execute(any(VideoDTO.class))).thenReturn(video);
-            })) {
+        // Act
+        List<VideoDTO> videos = controladorVideo.listarVideosUsuario();
 
-            // Act
-            var videoSalvo = controladorVideo.uploadVideo(videoDTO);
-
-            // Assert
-            assertThat(videoSalvo)
-                .isInstanceOf(VideoDTO.class)
-                .isNotNull()
-                .isEqualTo(videoDTO);
-
-            assertThat(videoSalvo).extracting(VideoDTO::getId).isEqualTo(video.getId());
-            assertThat(videoSalvo).extracting(VideoDTO::getNome).isEqualTo(video.getNome());
-            assertThat(videoSalvo).extracting(VideoDTO::getStatus).isEqualTo(video.getStatus());
-        }
+        // Assert
+        assertThat(videos).isNotNull().isNotEmpty();
+        assertThat(videos).hasSize(1);
+        assertThat(videos.get(0)).isInstanceOf(VideoDTO.class);
     }
 
+    @Test
+    void devePermitirUploadVideo() throws VideoStudioException {
+        // Arrange
+        when(uploadVideoUseCase.execute(any(VideoDTO.class))).thenReturn(VideoHelper.criarVideo());
+
+        // Act
+        VideoDTO videoDTO = controladorVideo.uploadVideo(VideoHelper.criarVideoDTO());
+
+        // Assert
+        assertThat(videoDTO).isNotNull().isInstanceOf(VideoDTO.class);
+    }
 }

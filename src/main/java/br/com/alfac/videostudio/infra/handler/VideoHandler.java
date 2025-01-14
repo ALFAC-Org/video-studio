@@ -28,22 +28,19 @@ public class VideoHandler {
     private final ControladorVideo controladorVideo;
     private final VideoMapper videoMapper;
 
-    public VideoHandler(final ControladorVideo controladorVideo) {
+    public VideoHandler(final ControladorVideo controladorVideo, final VideoMapper videoMapper) {
         this.controladorVideo = controladorVideo;
-        this.videoMapper = VideoMapper.INSTANCE;
+        this.videoMapper = videoMapper;
     }
 
     @Operation(summary = "Listar videos do usuário")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Operação bem sucedida"),
-        @ApiResponse(responseCode = "404", description = "Nenhum video cadastrado", content = {
-            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ApiError.class))
-        })})
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<VideoDTO>> listarVideosUsuario(
-        @RequestHeader(name = "Authorization") String authorization,
-        @RequestAttribute("username") String username) throws VideoStudioException {
-
+            @ApiResponse(responseCode = "200", description = "Operação bem sucedida"),
+            @ApiResponse(responseCode = "404", description = "Nenhum video cadastrado", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ApiError.class))
+            })})
+    @GetMapping(path = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<VideoDTO>> listarVideosUsuario(@PathVariable String username) throws VideoStudioException {
         return new ResponseEntity<>(controladorVideo.listarVideosUsuario(), HttpStatus.OK);
     }
 
@@ -55,9 +52,9 @@ public class VideoHandler {
             })})
     @PostMapping
     public ResponseEntity<VideoDTO> uploadVideo(
-        @RequestHeader(name = "Authorization") String authorization,
-        @RequestAttribute("username") String username,
-        @Valid @RequestBody VideoRequest videoRequest) throws VideoStudioException {
+            @RequestHeader(name = "Authorization") String authorization,
+            @RequestAttribute("username") String username,
+            @Valid @RequestBody VideoRequest videoRequest) throws VideoStudioException {
 
         VideoDTO video = controladorVideo.uploadVideo(videoMapper.toDTO(videoRequest));
         return new ResponseEntity<>(video, HttpStatus.CREATED);

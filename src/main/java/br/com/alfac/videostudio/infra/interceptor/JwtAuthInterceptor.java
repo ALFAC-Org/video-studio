@@ -3,7 +3,6 @@ package br.com.alfac.videostudio.infra.interceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -16,7 +15,6 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
     private final JwtTokenProvider tokenProvider;
 
-    @Autowired
     public JwtAuthInterceptor(JwtTokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }

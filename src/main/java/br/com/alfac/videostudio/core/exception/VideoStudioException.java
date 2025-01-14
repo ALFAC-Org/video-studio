@@ -4,26 +4,61 @@ import java.util.List;
 
 public class VideoStudioException extends Exception {
 
-    private final VideoStudioError foodError;
-    private final List<VideoStudioError> foodErrors;
+    private final VideoStudioError videoStudioError;
+    private final List<VideoStudioError> videoStudioErrors;
 
-    public VideoStudioException(VideoStudioError foodError) {
-        super(foodError.getErrorMessage());
-        this.foodError = foodError;
-        this.foodErrors = null;
+    public VideoStudioException(final List<VideoStudioError> videoStudioErrors) {
+        super(getMessages(videoStudioErrors));
+        this.videoStudioErrors = videoStudioErrors;
+        this.videoStudioError = null;
+    }
+
+    public VideoStudioException(VideoStudioError videoStudioError) {
+        super(videoStudioError.getErrorMessage());
+        this.videoStudioError = videoStudioError;
+        this.videoStudioErrors = null;
+    }
+
+    public VideoStudioException(final List<VideoStudioError> videoStudioErrors, Throwable e) {
+        super(getMessages(videoStudioErrors), e);
+        this.videoStudioErrors = videoStudioErrors;
+        this.videoStudioError = null;
+    }
+    public VideoStudioException(VideoStudioError videoStudioError, Throwable e) {
+        super(videoStudioError.getErrorMessage(), e);
+        this.videoStudioError = videoStudioError;
+        this.videoStudioErrors = null;
     }
 
 
-    public VideoStudioError getFoodErros() {
-        return foodError;
+    public VideoStudioException(VideoStudioError videoStudioError, Object... args) {
+        super(String.format(videoStudioError.getErrorMessage(), args));
+        this.videoStudioError = videoStudioError;
+        this.videoStudioErrors = null;
     }
 
-    public List<VideoStudioError> getFoodErrors() {
-        return foodErrors;
+    public VideoStudioException(VideoStudioError videoStudioError, Throwable e, Object... args) {
+        super(String.format(videoStudioError.getErrorMessage(), args), e);
+        this.videoStudioError = videoStudioError;
+        this.videoStudioErrors = null;
     }
 
-    private static String getMessages(final List<VideoStudioError> foodErrors) {
-        List<String> mensagensDeErro = foodErrors.stream().map(VideoStudioError::getErrorMessage).toList();
+    public VideoStudioException(String videoNotFound) {
+        super(videoNotFound);
+        this.videoStudioError = null;
+        this.videoStudioErrors = null;
+    }
+
+    public VideoStudioError getVideoStudioError() {
+        return videoStudioError;
+    }
+
+    public List<VideoStudioError> getVideoStudioErrors() {
+        return videoStudioErrors;
+    }
+
+    private static String getMessages(final List<VideoStudioError> videoStudioErrors) {
+        List<String> mensagensDeErro = videoStudioErrors.stream().map(VideoStudioError::getErrorMessage).toList();
         return String.join(",", mensagensDeErro);
     }
 }
