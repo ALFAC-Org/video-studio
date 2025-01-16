@@ -6,7 +6,8 @@ import br.com.alfac.videostudio.core.domain.Usuario;
 
 public interface RepositorioUsuarioGateway {
 
-    Optional<Usuario> consultarUsuarioPorUsername(String username);
+    Optional<Usuario> consultarUsuarioPorEmail(String email);
+    boolean emailJaCadastrado(String email);
 
     Usuario cadastrarUsuario(Usuario usuario);
 

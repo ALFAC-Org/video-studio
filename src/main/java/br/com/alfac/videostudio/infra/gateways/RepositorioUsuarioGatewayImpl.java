@@ -21,9 +21,14 @@ public class RepositorioUsuarioGatewayImpl implements RepositorioUsuarioGateway 
     }
 
     @Override
-    public Optional<Usuario> consultarUsuarioPorUsername(final String username) {
-        Optional<UsuarioEntity> usuarioEntityOpt = usuarioEntityRepository.findByUsername(username);
+    public Optional<Usuario> consultarUsuarioPorEmail(final String email) {
+        Optional<UsuarioEntity> usuarioEntityOpt = usuarioEntityRepository.findByEmail(email);
         return montarUsuario(usuarioEntityOpt);
+    }
+
+    @Override
+    public boolean emailJaCadastrado(String email) {
+        return this.usuarioEntityRepository.existsByEmail(email);
     }
 
     @Override

@@ -11,6 +11,7 @@ import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
 import br.com.alfac.videostudio.infra.security.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class VideoStudioConfiguration {
@@ -24,8 +25,8 @@ public class VideoStudioConfiguration {
     }
 
     @Bean
-    public ControladorUsuario controladorUsuario(final RepositorioUsuarioGatewayImpl repositorioUsuarioGatewayImpl) {
-        CadastrarUsuarioUseCase cadastrarUsuarioUseCase = new CadastrarUsuarioUseCase(repositorioUsuarioGatewayImpl);
+    public ControladorUsuario controladorUsuario(final RepositorioUsuarioGatewayImpl repositorioUsuarioGatewayImpl, PasswordEncoder passwordEncoder) {
+        CadastrarUsuarioUseCase cadastrarUsuarioUseCase = new CadastrarUsuarioUseCase(repositorioUsuarioGatewayImpl, passwordEncoder);
 
         return new ControladorUsuario(cadastrarUsuarioUseCase);
     }

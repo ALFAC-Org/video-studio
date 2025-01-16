@@ -5,15 +5,16 @@ import java.util.UUID;
 public class Usuario  {
     private UUID uuid;
     private Long id;
-    private String username;
+    private String nome;
     private String email;
+    private String senha;
 
-    public String getUsername() {
-        return username;
+    public String getNome() {
+        return nome;
     }
     
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public Long getId() {
@@ -39,5 +40,12 @@ public class Usuario  {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 }

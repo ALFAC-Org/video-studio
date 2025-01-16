@@ -10,9 +10,9 @@ public final class UsuarioPresenter {
 
     public static UsuarioDTO mapearParaUsuarioDTO(Usuario usuario) {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setUsername(usuario.getUsername());
-        usuarioDTO.setId(usuario.getId());
-        usuarioDTO.setUuId(usuario.getUuid());
+        usuarioDTO.setName(usuario.getNome());
+        usuarioDTO.setEmail(usuario.getEmail());
+        usuarioDTO.setUuid(usuario.getUuid());
         return usuarioDTO;
     }
 

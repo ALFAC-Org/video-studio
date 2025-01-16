@@ -2,6 +2,7 @@ package br.com.alfac.videostudio.infra.handler;
 
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorUsuario;
 import br.com.alfac.videostudio.core.application.dto.UsuarioDTO;
+import br.com.alfac.videostudio.core.domain.Usuario;
 import br.com.alfac.videostudio.core.exception.VideoStudioException;
 import br.com.alfac.videostudio.infra.dto.UsuarioRequest;
 import br.com.alfac.videostudio.infra.mapper.UsuarioMapper;
@@ -39,10 +40,9 @@ public class UsuarioHandler {
             })})
     @PostMapping
     public ResponseEntity<UsuarioDTO> cadastrarUsuario(
-        @RequestHeader(name = "Authorization") String authorization,
         @Valid @RequestBody UsuarioRequest usuarioRequest) throws VideoStudioException {
 
-        UsuarioDTO usuarioDTO = controladorUsuario.cadastrarUsuario(usuarioMapper.toDTO(usuarioRequest));
+        UsuarioDTO usuarioDTO = controladorUsuario.cadastrarUsuario(usuarioMapper.toDomain(usuarioRequest));
         return new ResponseEntity<>(usuarioDTO, HttpStatus.CREATED);
     }
 
