@@ -1,21 +1,26 @@
 package br.com.alfac.videostudio.infra.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class LoginRequest {
 
-    @NotEmpty(message = "Username é obrigatório.")
-    private String username;
+    @Email(message = "Email inválido.")
+    @NotEmpty(message = "Email é obrigatório.")
+    private String email;
 
-    @NotEmpty(message = "Password é obrigatório.")
+    @Size(min = 8, message = "Password deve ter no mínimo 8 caracteres.")
+    @NotBlank(message = "Password é obrigatório.")
     private String password;
     
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

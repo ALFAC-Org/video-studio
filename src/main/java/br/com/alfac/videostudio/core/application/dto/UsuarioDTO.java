@@ -3,31 +3,33 @@ package br.com.alfac.videostudio.core.application.dto;
 import java.util.UUID;
 
 public class UsuarioDTO {
-    private Long id;
+
     private UUID uuid;
-    private String username;
+    private String name;
+    private String email;
 
-    public String getUsername() {
-        return username;
+
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuId(final UUID uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

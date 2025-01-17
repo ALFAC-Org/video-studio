@@ -8,6 +8,7 @@ import br.com.alfac.videostudio.core.domain.StatusVideo;
 import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.core.exception.VideoStudioError;
 import br.com.alfac.videostudio.core.exception.VideoStudioException;
+import br.com.alfac.videostudio.core.exception.video.VideoError;
 import br.com.alfac.videostudio.infra.handler.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -70,7 +71,7 @@ class VideoHandlerTest {
 
         @Test
         void deveRetornarNenhumVideoCadastrado() throws Exception {
-            when(controladorVideo.listarVideosUsuario()).thenThrow(new VideoStudioException(VideoStudioError.VIDEOS_NOT_FOUND));
+            when(controladorVideo.listarVideosUsuario()).thenThrow(new VideoStudioException(VideoError.VIDEOS_NOT_FOUND));
 
             mockMvc.perform(get("/api/v1/videos/johndoe")
                             .contentType(MediaType.APPLICATION_JSON))

@@ -1,9 +1,11 @@
 package br.com.alfac.videostudio.infra.persistence;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -14,17 +16,25 @@ public class UsuarioEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Username é obrigatório")
-    private String username;
+    @NotBlank(message = "Nome é obrigatório")
+    private String nome;
+
+    @NotBlank(message = "Email é obrigatório")
+    private String email;
+
+    @NotBlank(message = "Senha é obrigatório")
+    private String senha;
 
     private UUID uuid;
 
-    public String getUsername() {
-        return username;
+    private LocalDateTime dataCriacao;
+
+    public String getNome() {
+        return nome;
     }
-    
-    public void setUsername(String username) {
-        this.username = username;
+
+    public void setNome(String username) {
+        this.nome = username;
     }
 
     public Long getId() {
@@ -41,6 +51,36 @@ public class UsuarioEntity implements Serializable {
 
     public void setUuid(final UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.uuid = UUID.randomUUID();
+        this.dataCriacao = LocalDateTime.now();
     }
 
 }

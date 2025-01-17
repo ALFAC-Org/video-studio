@@ -4,6 +4,7 @@ import br.com.alfac.videostudio.core.application.adapters.presenter.UsuarioPrese
 import br.com.alfac.videostudio.core.application.dto.UsuarioDTO;
 import br.com.alfac.videostudio.core.application.usecases.CadastrarUsuarioUseCase;
 import br.com.alfac.videostudio.core.domain.Usuario;
+import br.com.alfac.videostudio.core.exception.VideoStudioException;
 
 public class ControladorUsuario {
 
@@ -13,7 +14,7 @@ public class ControladorUsuario {
         this.cadastrarUsuarioUseCase = cadastrarUsuarioUseCase;
     }
 
-    public UsuarioDTO cadastrarUsuario(UsuarioDTO usuario) {
+    public UsuarioDTO cadastrarUsuario(Usuario usuario) throws VideoStudioException {
         Usuario usuarioCadastrado = cadastrarUsuarioUseCase.execute(usuario);
         return UsuarioPresenter.mapearParaUsuarioDTO(usuarioCadastrado);
     }
