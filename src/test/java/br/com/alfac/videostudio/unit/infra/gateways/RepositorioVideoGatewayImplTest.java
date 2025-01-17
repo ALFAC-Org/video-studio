@@ -47,7 +47,7 @@ class RepositorioVideoGatewayImplTest {
         videoEntity.setUuid(UUID.randomUUID());
         videoEntity.setNome("Nome Teste");
 
-        video = new Video();
+        video =  new Video(1L, "");
         video.setId(1L);
         video.setUuid(UUID.randomUUID());
         video.setNome("Nome Teste");

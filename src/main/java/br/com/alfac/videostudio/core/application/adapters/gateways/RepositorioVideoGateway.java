@@ -10,7 +10,7 @@ public interface RepositorioVideoGateway {
 
     Optional<Video> consultarVideoPorUuId(UUID id);
 
-    List<Video> listarVideosUsuario();
+    List<Video> listarVideosUsuario(Long usuarioId);
     
     Video registrarUploadVideo(Video video);
 

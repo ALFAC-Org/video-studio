@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 public class VideoRequest {
 
-    @Schema(example = "John Doe")
+    @Schema(example = "Vídeo XYZ")
     @NotEmpty(message = "Nome é obrigatório.")
     private String nome;
     

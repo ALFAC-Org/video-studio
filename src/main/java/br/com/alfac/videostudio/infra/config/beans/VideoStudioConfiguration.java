@@ -4,6 +4,7 @@ import br.com.alfac.videostudio.core.application.adapters.controller.Controlador
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
 import br.com.alfac.videostudio.core.application.usecases.CadastrarUsuarioUseCase;
 import br.com.alfac.videostudio.core.application.usecases.ListarVideosUseCase;
+import br.com.alfac.videostudio.core.application.usecases.ObterUsuarioPorUsernameUseCase;
 import br.com.alfac.videostudio.core.application.usecases.UploadVideoUseCase;
 import br.com.alfac.videostudio.infra.gateways.RepositorioUsuarioGatewayImpl;
 import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
@@ -29,6 +30,11 @@ public class VideoStudioConfiguration {
         CadastrarUsuarioUseCase cadastrarUsuarioUseCase = new CadastrarUsuarioUseCase(repositorioUsuarioGatewayImpl, passwordEncoder);
 
         return new ControladorUsuario(cadastrarUsuarioUseCase);
+    }
+
+    @Bean
+    public ObterUsuarioPorUsernameUseCase obterUsuarioPorUsername(final RepositorioUsuarioGatewayImpl repositorioUsuarioGatewayImpl) {
+        return new ObterUsuarioPorUsernameUseCase(repositorioUsuarioGatewayImpl);
     }
 
     @Bean

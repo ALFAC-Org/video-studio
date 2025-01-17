@@ -34,7 +34,7 @@ class UploadVideoUseCaseTest {
         when(repositorioVideoGateway.registrarUploadVideo(any(Video.class))).thenReturn(video);
 
         // Act
-        Video execute = uploadVideoUseCase.execute(videoDTO);
+        Video execute = uploadVideoUseCase.execute(1L, videoDTO);
 
         // Assert
         var clienteRetornado = assertThat(execute)
@@ -51,10 +51,10 @@ class UploadVideoUseCaseTest {
     @Test
     void execute() {
         // Arrange
-        when(repositorioVideoGateway.registrarUploadVideo(any(Video.class))).thenReturn(new Video());
+        when(repositorioVideoGateway.registrarUploadVideo(any(Video.class))).thenReturn(new Video(1L, ""));
 
         // Act
-        Video execute = uploadVideoUseCase.execute(new VideoDTO());
+        Video execute = uploadVideoUseCase.execute(1L, new VideoDTO());
 
         // Assert
         assertNotNull(execute);
@@ -63,7 +63,7 @@ class UploadVideoUseCaseTest {
     @Test
     void shouldThrowExceptionWhenClienteDTOIsNull() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> uploadVideoUseCase.execute(null));
+        assertThrows(NullPointerException.class, () -> uploadVideoUseCase.execute(1L, null));
     }
 
 }

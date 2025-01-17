@@ -50,7 +50,7 @@ class VideoHandlerTest {
     class ListarVideos {
         @Test
         void deveListarVideosUsuario() throws Exception {
-            Video video = new Video();
+            Video video = new Video(1L, "");
             video.setId(1L);
             video.setNome("Ayrton Senna");
             video.setStatus(StatusVideo.PENDENTE);
@@ -58,7 +58,7 @@ class VideoHandlerTest {
             VideoDTO videoDTO = VideoHelper.criarVideoDTO(video);
             List<VideoDTO> videoDTOList = Arrays.asList(videoDTO);
 
-            when(controladorVideo.listarVideosUsuario()).thenReturn(videoDTOList);
+            when(controladorVideo.listarVideosUsuario(1L)).thenReturn(videoDTOList);
 
             mockMvc.perform(get("/api/v1/videos/johndoe")
                                     .contentType(MediaType.APPLICATION_JSON)
@@ -71,7 +71,7 @@ class VideoHandlerTest {
 
         @Test
         void deveRetornarNenhumVideoCadastrado() throws Exception {
-            when(controladorVideo.listarVideosUsuario()).thenThrow(new VideoStudioException(VideoError.VIDEOS_NOT_FOUND));
+            when(controladorVideo.listarVideosUsuario(1L)).thenThrow(new VideoStudioException(VideoError.VIDEOS_NOT_FOUND));
 
             mockMvc.perform(get("/api/v1/videos/johndoe")
                             .contentType(MediaType.APPLICATION_JSON))

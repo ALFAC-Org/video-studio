@@ -43,7 +43,7 @@ public abstract class VideoHelper {
     }
 
     public static Video criarVideo(String cpf, String nome, String email) {
-        Video video = new Video();
+        Video video = new Video(1L, "");
         long id = 123;
 
         video.setId(id);

@@ -31,8 +31,8 @@ public class RepositorioVideoGatewayImpl implements RepositorioVideoGateway {
     }
 
     @Override
-    public List<Video> listarVideosUsuario() {
-        var videoEntities = videoEntityRepository.findAll();
+    public List<Video> listarVideosUsuario(Long usuarioId) {
+        var videoEntities = videoEntityRepository.findByUsuarioId(usuarioId);
 
         List<Video> videos = new ArrayList<>();
 

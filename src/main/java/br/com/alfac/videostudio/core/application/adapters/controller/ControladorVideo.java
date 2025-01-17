@@ -8,6 +8,7 @@ import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.core.exception.VideoStudioException;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ControladorVideo {
 
@@ -20,13 +21,13 @@ public class ControladorVideo {
         this.uploadVideoUseCase = uploadVideoUseCase;
     }
 
-    public List<VideoDTO> listarVideosUsuario() throws VideoStudioException {
-        List<Video> videoList = listarVideosUseCase.execute();
+    public List<VideoDTO> listarVideosUsuario(Long usuarioId) throws VideoStudioException {
+        List<Video> videoList = listarVideosUseCase.execute(usuarioId);
         return VideoPresenter.mapearParaVideoDTOList(videoList);
     }
 
-    public VideoDTO uploadVideo(VideoDTO video) {
-        Video videoCadastrado = uploadVideoUseCase.execute(video);
+    public VideoDTO uploadVideo(Long usuarioId, VideoDTO video) {
+        Video videoCadastrado = uploadVideoUseCase.execute(usuarioId, video);
         return VideoPresenter.mapearParaVideoDTO(videoCadastrado);
     }
 }

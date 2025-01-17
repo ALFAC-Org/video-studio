@@ -39,10 +39,10 @@ class ControladorVideoTest {
     @Test
     void devePermitirListarVideosUsuario() throws Exception {
         // Arrange
-        when(listarVideosUseCase.execute()).thenReturn(Arrays.asList(VideoHelper.criarVideo()));
+        when(listarVideosUseCase.execute(1L)).thenReturn(Arrays.asList(VideoHelper.criarVideo()));
 
         // Act
-        List<VideoDTO> videos = controladorVideo.listarVideosUsuario();
+        List<VideoDTO> videos = controladorVideo.listarVideosUsuario(1L);
 
         // Assert
         assertThat(videos).isNotNull().isNotEmpty();
@@ -53,10 +53,10 @@ class ControladorVideoTest {
     @Test
     void devePermitirUploadVideo() throws VideoStudioException {
         // Arrange
-        when(uploadVideoUseCase.execute(any(VideoDTO.class))).thenReturn(VideoHelper.criarVideo());
+        when(uploadVideoUseCase.execute(any(Long.class), any(VideoDTO.class))).thenReturn(VideoHelper.criarVideo());
 
         // Act
-        VideoDTO videoDTO = controladorVideo.uploadVideo(VideoHelper.criarVideoDTO());
+        VideoDTO videoDTO = controladorVideo.uploadVideo(1L, VideoHelper.criarVideoDTO());
 
         // Assert
         assertThat(videoDTO).isNotNull().isInstanceOf(VideoDTO.class);
