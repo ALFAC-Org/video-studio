@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 49.64%               |
-| :heavy_check_mark: Number of Lines Covered | 276    |
-| :x: Number of Lines Missed  | 280     |
-| Total Number of Lines   | 556     |
+| Code Coverage %         | 49.38%               |
+| :heavy_check_mark: Number of Lines Covered | 279    |
+| :x: Number of Lines Missed  | 286     |
+| Total Number of Lines   | 565     |
 
 
 ## Details:
@@ -66,67 +66,6 @@
         
 #### All Lines Covered!
         
-</details>
-
-    
-### br/com/alfac/videostudio/infra/dto
-
-<details>
-    <summary>
-:x: VideoRequest.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #18
-```
-    }
-```
-</details>
-
-    
-
-<details>
-    <summary>
-:x: LoginRequest.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #24
-```
-    }
-```
-- Line #32
-```
-    }
-```
-</details>
-
-    
-
-<details>
-    <summary>
-:x: UsuarioRequest.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #29
-```
-    }
-```
-- Line #37
-```
-    }
-```
-- Line #45
-```
-    }
-```
 </details>
 
     
@@ -202,6 +141,22 @@
 
 <details>
     <summary>
+:x: TermsHandler.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #42
+```
+        } catch (IOException e) {
+```
+</details>
+
+    
+
+<details>
+    <summary>
 :x: LoginHandler.java
     </summary>
 
@@ -215,6 +170,67 @@
 - Line #66
 ```
         }
+```
+</details>
+
+    
+### br/com/alfac/videostudio/infra/dto
+
+<details>
+    <summary>
+:x: VideoRequest.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #18
+```
+    }
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: LoginRequest.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #24
+```
+    }
+```
+- Line #32
+```
+    }
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: UsuarioRequest.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #29
+```
+    }
+```
+- Line #37
+```
+    }
+```
+- Line #45
+```
+    }
 ```
 </details>
 
