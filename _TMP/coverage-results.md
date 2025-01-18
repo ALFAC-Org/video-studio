@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 49.38%               |
-| :heavy_check_mark: Number of Lines Covered | 279    |
-| :x: Number of Lines Missed  | 286     |
-| Total Number of Lines   | 565     |
+| Code Coverage %         | 47.12%               |
+| :heavy_check_mark: Number of Lines Covered | 286    |
+| :x: Number of Lines Missed  | 321     |
+| Total Number of Lines   | 607     |
 
 
 ## Details:
@@ -29,6 +29,18 @@
 ```
         } else {
 ```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: LogInterceptor.java
+    </summary>
+
+        
+#### Lines Missed:
+        
 </details>
 
     
@@ -235,6 +247,47 @@
 </details>
 
     
+### br/com/alfac/videostudio/infra/logger
+
+<details>
+    <summary>
+:x: FileLogService.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #21
+```
+        } catch (IOException e) {
+```
+- Line #23
+```
+        }
+```
+- Line #24
+```
+    }
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: DatabaseLogService.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #24
+```
+    }
+```
+</details>
+
+    
 ### br/com/alfac/videostudio/infra/listener
 
 <details>
@@ -262,31 +315,31 @@
         
 #### Lines Missed:
         
-- Line #38
+- Line #37
 ```
     }
 ```
-- Line #46
+- Line #45
 ```
     }
 ```
-- Line #54
+- Line #53
 ```
     }
 ```
-- Line #62
+- Line #61
 ```
     }
 ```
-- Line #70
+- Line #69
 ```
     }
 ```
-- Line #78
+- Line #77
 ```
     }
 ```
-- Line #84
+- Line #83
 ```
     }
 ```
@@ -297,6 +350,16 @@
 <details>
     <summary>
 :x: VideoEntityRepository.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: LogRepository.java
     </summary>
 
         
@@ -322,6 +385,46 @@
         
 #### All Lines Covered!
         
+</details>
+
+    
+
+<details>
+    <summary>
+:x: LogEntity.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #28
+```
+    }
+```
+- Line #34
+```
+    }
+```
+- Line #39
+```
+    }
+```
+- Line #51
+```
+    }
+```
+- Line #59
+```
+    }
+```
+- Line #67
+```
+    }
+```
+- Line #72
+```
+    }
+```
 </details>
 
     
@@ -391,6 +494,17 @@
 
         
 #### All Lines Covered!
+        
+</details>
+
+    
+### br/com/alfac/videostudio/core/domain/service
+
+<details>
+    <summary>
+:x: LogService.java
+    </summary>
+
         
 </details>
 
