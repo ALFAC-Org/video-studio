@@ -1,0 +1,42 @@
+{
+  "termos_de_uso": {
+    "titulo": "Termos de Uso da Plataforma Video-Studio",
+    "data_efetiva": "01/01/2024",
+    "descricao": "Ao utilizar a plataforma video-studio, você concorda com os seguintes termos e condições:",
+    "termos": [
+      {
+        "titulo": "Consentimento para Processamento de Dados",
+        "descricao": "Ao enviar vídeos para a plataforma video-studio, você consente com o processamento dos seus dados pessoais conforme descrito na nossa Política de Privacidade. Seus dados serão utilizados para fins de autenticação, processamento de vídeos e geração de relatórios."
+      },
+      {
+        "titulo": "Armazenamento e Criptografia",
+        "descricao": "Os arquivos de vídeo enviados serão armazenados em uma solução de nuvem, onde serão criptografados. Além disso, cada arquivo terá um tempo de expiração de 5 minutos para acesso após a solicitação."
+      },
+      {
+        "titulo": "Download de Arquivos",
+        "descricao": "Ao solicitar o download de um arquivo, a plataforma video-studio buscará o arquivo e gerará um link temporário para download. Após a conclusão do download, o status do arquivo será atualizado como 'BAIXADO'."
+      },
+      {
+        "titulo": "Política de Retenção de Arquivos",
+        "descricao": "Os arquivos armazenados serão automaticamente removidos após uma semana. Esta política visa garantir a segurança e a privacidade dos dados."
+      },
+      {
+        "titulo": "Registro de Atividades",
+        "descricao": "Todas as atividades exercidas dentro da plataforma, serão registradas nos logs de atividades contendo informações como usuário, recurso (endpoint) e data/hora."
+      },
+      {
+        "titulo": "Processamento de Vídeos",
+        "descricao": "Os vídeos enviados serão processados por nossa plataforma, onde os dados serão armazenados de forma criptografada e acessível apenas pelo usuário com permissões adequadas."
+      },
+      {
+        "titulo": "Limitação de Responsabilidade",
+        "descricao": "A plataforma video-studio não se responsabiliza por quaisquer danos diretos ou indiretos resultantes do uso da plataforma, incluindo, mas não se limitando a, perda de dados, interrupção de negócios ou lucros cessantes."
+      },
+      {
+        "titulo": "Conformidade com a LGPD",
+        "descricao": "A plataforma video-studio está em conformidade com a Lei Geral de Proteção de Dados (LGPD). Seus dados pessoais serão coletados, utilizados e armazenados de acordo com os princípios e requisitos estabelecidos pela LGPD. Você tem o direito de acessar, corrigir e excluir seus dados pessoais, bem como de exercer outros direitos previstos na LGPD."
+      }
+    ],
+    "aceitacao": "Ao utilizar a plataforma video-studio, você declara que leu, entendeu e concorda com todos os termos e condições acima."
+  }
+}
