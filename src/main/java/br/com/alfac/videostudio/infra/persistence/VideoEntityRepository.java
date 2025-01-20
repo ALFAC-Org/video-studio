@@ -11,6 +11,7 @@ import java.util.UUID;
 public interface VideoEntityRepository extends JpaRepository<VideoEntity, Long> {
 
     Optional<VideoEntity> findByUuid(UUID uuid);
+    Optional<VideoEntity> findByUuidAndUsuarioId(UUID uuid, Long usuarioId);
 
     List<VideoEntity> findByUsuarioId(Long usuarioId);
 

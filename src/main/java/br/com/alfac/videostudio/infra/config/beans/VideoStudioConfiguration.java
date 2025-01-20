@@ -2,10 +2,8 @@ package br.com.alfac.videostudio.infra.config.beans;
 
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorUsuario;
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
-import br.com.alfac.videostudio.core.application.usecases.CadastrarUsuarioUseCase;
-import br.com.alfac.videostudio.core.application.usecases.ListarVideosUseCase;
-import br.com.alfac.videostudio.core.application.usecases.ObterUsuarioPorUsernameUseCase;
-import br.com.alfac.videostudio.core.application.usecases.UploadVideoUseCase;
+import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
+import br.com.alfac.videostudio.core.application.usecases.*;
 import br.com.alfac.videostudio.infra.gateways.RepositorioUsuarioGatewayImpl;
 import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
 
@@ -18,11 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class VideoStudioConfiguration {
 
     @Bean
-    public ControladorVideo controladorVideo(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl) {
+    public ControladorVideo controladorVideo(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final BucketGateway bucketGateway) {
         ListarVideosUseCase listarVideosUseCase = new ListarVideosUseCase(repositorioVideoGatewayImpl);
         UploadVideoUseCase uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGatewayImpl);
-
-        return new ControladorVideo(listarVideosUseCase, uploadVideoUseCase);
+        DownloadVideoUseCase downloadVideoUseCase = new DownloadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway);
+        return new ControladorVideo(listarVideosUseCase, uploadVideoUseCase, downloadVideoUseCase);
     }
 
     @Bean

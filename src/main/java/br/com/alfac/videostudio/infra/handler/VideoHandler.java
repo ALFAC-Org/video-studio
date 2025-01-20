@@ -1,13 +1,13 @@
 package br.com.alfac.videostudio.infra.handler;
 
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
+import br.com.alfac.videostudio.core.application.adapters.gateways.IUsuarioLogado;
+import br.com.alfac.videostudio.core.application.dto.DownloadDTO;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
-import br.com.alfac.videostudio.core.application.usecases.ObterUsuarioPorUsernameUseCase;
-import br.com.alfac.videostudio.core.domain.Usuario;
 import br.com.alfac.videostudio.core.exception.VideoStudioException;
+import br.com.alfac.videostudio.infra.config.exception.ApiError;
 import br.com.alfac.videostudio.infra.dto.VideoRequest;
 import br.com.alfac.videostudio.infra.mapper.VideoMapper;
-import br.com.alfac.videostudio.infra.config.exception.ApiError;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,29 +15,40 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/videos")
 @Tag(name = "Video", description = "Métodos para manipulação de vídeos")
 public class VideoHandler {
 
-    private final ObterUsuarioPorUsernameUseCase obterUsuarioPorUsernameUseCase;
     private final ControladorVideo controladorVideo;
     private final VideoMapper videoMapper;
+    private final IUsuarioLogado usuarioLogado;
+    private final S3Client s3Client;
+    @Value("${s3.bucket-name}")
+    private String bucketName;
 
-    public VideoHandler(final ControladorVideo controladorVideo, final VideoMapper videoMapper, final ObterUsuarioPorUsernameUseCase obterUsuarioPorUsernameUseCase) {
-        this.obterUsuarioPorUsernameUseCase = obterUsuarioPorUsernameUseCase;
+    public VideoHandler(final ControladorVideo controladorVideo, final VideoMapper videoMapper, final IUsuarioLogado usuarioLogado, S3Client s3Client) {
         this.controladorVideo = controladorVideo;
         this.videoMapper = videoMapper;
+        this.usuarioLogado = usuarioLogado;
+        this.s3Client = s3Client;
     }
 
     @Operation(summary = "Listar videos do usuário")
@@ -47,14 +58,9 @@ public class VideoHandler {
                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ApiError.class))
             })})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<VideoDTO>> listarVideosUsuario(
-        @AuthenticationPrincipal UserDetails userDetails) throws VideoStudioException {
+    public ResponseEntity<List<VideoDTO>> listarVideosUsuario() throws VideoStudioException {
 
-        String username = userDetails.getUsername();
-
-        Usuario usuario = obterUsuarioPorUsernameUseCase.execute(username);
-        
-        return new ResponseEntity<>(controladorVideo.listarVideosUsuario(usuario.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(controladorVideo.listarVideosUsuario(usuarioLogado.getUsuarioLogado().id()), HttpStatus.OK);
     }
 
     @Operation(summary = "Upload de vídeo")
@@ -63,18 +69,28 @@ public class VideoHandler {
             @ApiResponse(responseCode = "404", description = "Erro ao cadastrar vídeo", content = {
                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ApiError.class))
             })})
-    @PostMapping
-    public ResponseEntity<VideoDTO> uploadVideo(
-        @AuthenticationPrincipal UserDetails userDetails,
-        @Valid @RequestBody VideoRequest videoRequest) throws VideoStudioException {
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<VideoDTO> uploadVideo( @RequestParam("fileName") String fileName,
+                                                @RequestParam("file") MultipartFile file) throws VideoStudioException, IOException {
 
-        String username = userDetails.getUsername();
+        VideoDTO video = controladorVideo.uploadVideo(usuarioLogado.getUsuarioLogado().id(), videoMapper.toDTO(new VideoRequest(fileName)));
 
-        Usuario usuario = obterUsuarioPorUsernameUseCase.execute(username);        
-        
-        VideoDTO video = controladorVideo.uploadVideo(usuario.getId(), videoMapper.toDTO(videoRequest));
+        Path tempFile = Files.createTempFile("upload-", video.getUuid().toString());
+        Files.copy(file.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
 
+        uploadFile(video.getUuid().toString(), tempFile);
+
+        Files.delete(tempFile);
         return new ResponseEntity<>(video, HttpStatus.CREATED);
+    }
+
+    public void uploadFile(String key, Path filePath) {
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromFile(filePath));
     }
 
     @Operation(summary = "Download de vídeo")
@@ -84,10 +100,11 @@ public class VideoHandler {
                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ApiError.class))
             })})
     @GetMapping(path = "/download/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void downloadVideoUsuario(
-        @AuthenticationPrincipal UserDetails userDetails,
-        @PathVariable String uuid) throws VideoStudioException {
-                
+    public ResponseEntity<DownloadDTO> downloadVideoUsuario(@PathVariable UUID uuid) throws VideoStudioException {
+        DownloadDTO downloadDTO = controladorVideo.downloadVideo(usuarioLogado.getUsuarioLogado().id(), uuid);
+
+
+        return ResponseEntity.ok(downloadDTO);
     }
 
 }
