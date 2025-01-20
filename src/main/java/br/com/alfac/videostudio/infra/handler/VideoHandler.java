@@ -1,6 +1,7 @@
 package br.com.alfac.videostudio.infra.handler;
 
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
+import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
 import br.com.alfac.videostudio.core.application.adapters.gateways.IUsuarioLogado;
 import br.com.alfac.videostudio.core.application.dto.DownloadDTO;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
@@ -40,15 +41,15 @@ public class VideoHandler {
     private final ControladorVideo controladorVideo;
     private final VideoMapper videoMapper;
     private final IUsuarioLogado usuarioLogado;
-    private final S3Client s3Client;
-    @Value("${s3.bucket-name}")
+    private final BucketGateway bucketGateway;
+    @Value("${s3.bucket-video-to-process}")
     private String bucketName;
 
-    public VideoHandler(final ControladorVideo controladorVideo, final VideoMapper videoMapper, final IUsuarioLogado usuarioLogado, S3Client s3Client) {
+    public VideoHandler(final ControladorVideo controladorVideo, final VideoMapper videoMapper, final IUsuarioLogado usuarioLogado, BucketGateway s3Client) {
         this.controladorVideo = controladorVideo;
         this.videoMapper = videoMapper;
         this.usuarioLogado = usuarioLogado;
-        this.s3Client = s3Client;
+        this.bucketGateway = s3Client;
     }
 
     @Operation(summary = "Listar videos do usuário")
@@ -78,20 +79,13 @@ public class VideoHandler {
         Path tempFile = Files.createTempFile("upload-", video.getUuid().toString());
         Files.copy(file.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
 
-        uploadFile(video.getUuid().toString(), tempFile);
+        bucketGateway.uploadFile(video.getUuid().toString(), tempFile, bucketName);
 
         Files.delete(tempFile);
         return new ResponseEntity<>(video, HttpStatus.CREATED);
     }
 
-    public void uploadFile(String key, Path filePath) {
-        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .build();
 
-        s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromFile(filePath));
-    }
 
     @Operation(summary = "Download de vídeo")
     @ApiResponses(value = {
@@ -101,8 +95,8 @@ public class VideoHandler {
             })})
     @GetMapping(path = "/download/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DownloadDTO> downloadVideoUsuario(@PathVariable UUID uuid) throws VideoStudioException {
-        DownloadDTO downloadDTO = controladorVideo.downloadVideo(usuarioLogado.getUsuarioLogado().id(), uuid);
 
+        DownloadDTO downloadDTO = controladorVideo.downloadVideo(usuarioLogado.getUsuarioLogado().id(), uuid);
 
         return ResponseEntity.ok(downloadDTO);
     }

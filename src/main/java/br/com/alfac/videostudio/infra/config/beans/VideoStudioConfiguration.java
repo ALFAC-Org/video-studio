@@ -8,6 +8,7 @@ import br.com.alfac.videostudio.infra.gateways.RepositorioUsuarioGatewayImpl;
 import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
 
 import br.com.alfac.videostudio.infra.security.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,11 +16,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class VideoStudioConfiguration {
 
+    @Value("${s3.bucket-file-processed}")
+    private String bucketArquivoProcessado;
+
     @Bean
     public ControladorVideo controladorVideo(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final BucketGateway bucketGateway) {
         ListarVideosUseCase listarVideosUseCase = new ListarVideosUseCase(repositorioVideoGatewayImpl);
         UploadVideoUseCase uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGatewayImpl);
-        DownloadVideoUseCase downloadVideoUseCase = new DownloadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway);
+        DownloadVideoUseCase downloadVideoUseCase = new DownloadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway, bucketArquivoProcessado);
         return new ControladorVideo(listarVideosUseCase, uploadVideoUseCase, downloadVideoUseCase);
     }
 
