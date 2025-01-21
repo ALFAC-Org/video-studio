@@ -1,0 +1,25 @@
+name: Security Check
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "maven"
+
+      - name: Run OWASP Dependency-Check
+        run: |
+          mvn dependency-check:check -DnvdApiKey=${{ secrets.OWASP_NVD_API_KEY }} -DnvdFailBuildOnCVSS=9

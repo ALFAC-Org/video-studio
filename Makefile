@@ -20,6 +20,10 @@ unit-test-coverage:
 
 test: unit-test
 
+security-check:
+	@echo "Running security checks"
+	@mvn dependency-check:check -DnvdApiKey=<key-here> -DnvdFailBuildOnCVSS=9
+
 package:
 	@echo "Packaging the application"
 	@mvn package
