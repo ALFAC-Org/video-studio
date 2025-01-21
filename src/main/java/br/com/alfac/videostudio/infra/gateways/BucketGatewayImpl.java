@@ -4,6 +4,7 @@ import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -18,19 +19,13 @@ public class BucketGatewayImpl implements BucketGateway {
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
 
-       @Value("${s3.expiration}")
+    @Value("${s3.expiration}")
     private Duration expiration;
 
-    public BucketGatewayImpl(S3Client s3Client) {
+    public BucketGatewayImpl(final S3Client s3Client, final S3Presigner s3Presigner) {
         this.s3Client = s3Client;
-        this.s3Presigner = S3Presigner.builder()
-                .endpointOverride(s3Client.serviceClientConfiguration().endpointOverride().get())
-                .region(s3Client.serviceClientConfiguration().region())
-                .credentialsProvider(s3Client.serviceClientConfiguration().credentialsProvider())
-                .build();
+        this.s3Presigner = s3Presigner;
     }
-
-
 
 
     @Override
@@ -63,7 +58,7 @@ public class BucketGatewayImpl implements BucketGateway {
         s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromFile(filePath));
     }
 
-     private  boolean checkIfFileExists(S3Client s3Client, String bucketName, String fileName) {
+    private boolean checkIfFileExists(S3Client s3Client, String bucketName, String fileName) {
         try {
             HeadObjectRequest request = HeadObjectRequest.builder()
                     .bucket(bucketName)

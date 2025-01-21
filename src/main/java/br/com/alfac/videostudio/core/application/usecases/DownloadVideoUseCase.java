@@ -26,9 +26,9 @@ public class DownloadVideoUseCase {
         this.bucketName = bucketName;
     }
 
-    public String execute(Long usuarioId, UUID videoId) throws VideoStudioException {
+    public String execute(Long usuarioLogadoId, UUID videoId) throws VideoStudioException {
 
-        Video video = videoRepository.consultarVideoPorUuIdEUsuarioId(videoId, usuarioId)
+        Video video = videoRepository.consultarVideoPorUuIdEUsuarioId(videoId, usuarioLogadoId)
                 .orElseThrow(() -> new VideoStudioException(VideoError.VIDEO_NOT_FOUND));
 
         if (!StatusVideo.PROCESSADO.equals(video.getStatus())) {
