@@ -2,6 +2,7 @@ package br.com.alfac.videostudio.infra.persistence;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -16,11 +17,16 @@ public class VideoEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Nome do cliente é obrigatório")
+    @NotEmpty(message = "Nome do vídeo é obrigatório")
     private String nome;
 
+    @Enumerated(EnumType.STRING)
     @NotEmpty(message = "Status do vídeo é obrigatório")
     private StatusVideo status;
+
+    @Column(name = "usuario_id")
+    @NotNull(message = "usuarioId é obrigatório")
+    private Long usuarioId;
 
     private UUID uuid;
 
@@ -46,6 +52,22 @@ public class VideoEntity implements Serializable {
 
     public void setUuid(final UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public StatusVideo getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusVideo status) {
+        this.status = status;
+    }
+
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
 }

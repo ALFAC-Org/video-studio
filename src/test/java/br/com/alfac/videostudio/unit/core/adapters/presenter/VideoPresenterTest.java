@@ -18,7 +18,7 @@ public class VideoPresenterTest {
     @Test
     void deveConseguirMapearParaVideoDTO() {
         // Arrange
-        Video video = new Video();
+        Video video = new Video(1L, "");
         video.setId(1L);
         video.setUuid(UUID.randomUUID());
         video.setNome("Nome Teste");

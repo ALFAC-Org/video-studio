@@ -10,12 +10,13 @@ public class ListarVideosUseCase {
 
     private final RepositorioVideoGateway videoRepository;
 
+
     public ListarVideosUseCase(final RepositorioVideoGateway videoRepository) {
         this.videoRepository = videoRepository;
     }
 
-    public List<Video> execute() throws VideoStudioException {
-        List<Video> videoList = videoRepository.listarVideosUsuario();
+    public List<Video> execute(Long usuarioId) throws VideoStudioException {
+        List<Video> videoList = videoRepository.listarVideosUsuario(usuarioId);
         return videoList;
     }
 

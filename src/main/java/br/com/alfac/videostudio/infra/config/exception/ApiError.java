@@ -26,16 +26,15 @@ public final class ApiError {
 
     public static ApiError createError(VideoStudioException ex) {
 
-        if (Objects.nonNull(ex.getVideoStudioErrors())) {
+        if (Objects.nonNull(ex.getVideoStudioError())) {
             return new ApiError(
-                    HttpStatus.valueOf(ex.getVideoStudioErrors().get(0).getStatusCode()).value(),
+                    HttpStatus.valueOf(ex.getVideoStudioError().getStatusCode()).value(),
                     ex.getMessage(),
-                    ex.getMessage()
-//                    ex.getVideoStudioErrors().getErrorCode()
+                    ex.getVideoStudioError().getErrorCode()
             );
         } else {
             ApiError apiError = ApiError.createDefaultApiValidationError();
-            ex.getVideoStudioErrors().forEach(foodError -> apiError.getArguments().add(new ApiErrorItem( foodError.getErrorCode(), foodError.getErrorMessage())));
+            ex.getVideoStudioErrors().forEach(foodError -> apiError.getArguments().add(new ApiErrorItem(foodError.getErrorCode(), foodError.getErrorMessage())));
             return apiError;
         }
     }
