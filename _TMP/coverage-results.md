@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 47.64%               |
-| :heavy_check_mark: Number of Lines Covered | 293    |
-| :x: Number of Lines Missed  | 322     |
-| Total Number of Lines   | 615     |
+| Code Coverage %         | 59.17%               |
+| :heavy_check_mark: Number of Lines Covered | 429    |
+| :x: Number of Lines Missed  | 296     |
+| Total Number of Lines   | 725     |
 
 
 ## Details:
@@ -19,15 +19,19 @@
 
 <details>
     <summary>
-:x: JwtAuthInterceptor.java
+:x: LogInterceptor.java
     </summary>
 
         
 #### Lines Missed:
         
-- Line #33
+- Line #30
 ```
-        } else {
+        } catch (Exception e) {
+```
+- Line #32
+```
+        }
 ```
 </details>
 
@@ -35,12 +39,16 @@
 
 <details>
     <summary>
-:x: LogInterceptor.java
+:x: UsuarioLogadoImpl.java
     </summary>
 
         
 #### Lines Missed:
         
+- Line #22
+```
+    }
+```
 </details>
 
     
@@ -196,7 +204,19 @@
         
 #### Lines Missed:
         
-- Line #18
+- Line #16
+```
+    }
+```
+- Line #20
+```
+    }
+```
+- Line #28
+```
+    }
+```
+- Line #36
 ```
     }
 ```
@@ -315,26 +335,6 @@
         
 #### Lines Missed:
         
-- Line #37
-```
-    }
-```
-- Line #45
-```
-    }
-```
-- Line #53
-```
-    }
-```
-- Line #61
-```
-    }
-```
-- Line #69
-```
-    }
-```
 - Line #77
 ```
     }
@@ -440,29 +440,25 @@
 
 <details>
     <summary>
-:x: Usuario.java
+:heavy_check_mark: Usuario.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: Video.java
     </summary>
 
         
 #### Lines Missed:
         
-- Line #18
-```
-    }
-```
-- Line #26
-```
-    }
-```
-- Line #34
-```
-    }
-```
-- Line #42
-```
-    }
-```
-- Line #50
+- Line #67
 ```
     }
 ```
@@ -472,7 +468,7 @@
 
 <details>
     <summary>
-:heavy_check_mark: Video.java
+:heavy_check_mark: UsuarioLogado.java
     </summary>
 
         
@@ -503,6 +499,22 @@
         
 #### Lines Missed:
         
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3Config.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #53
+```
+                .build();
+```
 </details>
 
     
@@ -554,15 +566,27 @@
 </details>
 
     
+
+<details>
+    <summary>
+:x: DownloadDTO.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+</details>
+
+    
 ### br/com/alfac/videostudio/core/application/adapters/controller
 
 <details>
     <summary>
-:heavy_check_mark: ControladorVideo.java
+:x: ControladorVideo.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
@@ -583,27 +607,100 @@
 
 <details>
     <summary>
-:x: RepositorioVideoGatewayImpl.java
+:heavy_check_mark: RepositorioVideoGatewayImpl.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #42
-```
-        }
-```
 </details>
 
     
 
 <details>
     <summary>
-:x: RepositorioUsuarioGatewayImpl.java
+:heavy_check_mark: RepositorioUsuarioGatewayImpl.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: BucketGatewayImpl.java
     </summary>
 
         
 #### Lines Missed:
+        
+- Line #37
+```
+                    .key(objectKey)
+```
+- Line #42
+```
+                    .getObjectRequest(getObjectRequest)
+```
+- Line #55
+```
+                .key(key)
+```
+- Line #59
+```
+    }
+```
+- Line #65
+```
+                    .key(fileName)
+```
+- Line #71
+```
+        } catch (S3Exception e) {
+```
+</details>
+
+    
+### br/com/alfac/videostudio/core/application/adapters/gateways
+
+<details>
+    <summary>
+:x: BucketGateway.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: RepositorioVideoGateway.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: RepositorioUsuarioGateway.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: IUsuarioLogado.java
+    </summary>
+
         
 </details>
 
@@ -633,27 +730,6 @@
 </details>
 
     
-### br/com/alfac/videostudio/core/application/adapters/gateways
-
-<details>
-    <summary>
-:x: RepositorioVideoGateway.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: RepositorioUsuarioGateway.java
-    </summary>
-
-        
-</details>
-
-    
 ### br/com/alfac/videostudio/infra/config/security
 
 <details>
@@ -676,7 +752,11 @@
         
 #### Lines Missed:
         
-- Line #58
+- Line #60
+```
+                });
+```
+- Line #68
 ```
     }
 ```
@@ -742,10 +822,6 @@
         
 #### Lines Missed:
         
-- Line #15
-```
-    }
-```
 </details>
 
     
@@ -817,7 +893,7 @@
         
 #### Lines Missed:
         
-- Line #18
+- Line #19
 ```
     }
 ```
@@ -828,20 +904,12 @@
 
 <details>
     <summary>
-:x: UsuarioError.java
+:heavy_check_mark: UsuarioError.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #18
-```
-    }
-```
-- Line #22
-```
-    }
-```
 </details>
 
     
@@ -849,11 +917,35 @@
 
 <details>
     <summary>
-:x: CadastrarUsuarioUseCase.java
+:x: ObterUsuarioPorUsernameUseCase.java
     </summary>
 
         
 #### Lines Missed:
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: DownloadVideoUseCase.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:heavy_check_mark: CadastrarUsuarioUseCase.java
+    </summary>
+
+        
+#### All Lines Covered!
         
 </details>
 
@@ -873,11 +965,11 @@
 
 <details>
     <summary>
-:x: ListarVideosUseCase.java
+:heavy_check_mark: ListarVideosUseCase.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
@@ -886,11 +978,11 @@
 
 <details>
     <summary>
-:x: UsuarioEntityMapper.java
+:heavy_check_mark: UsuarioEntityMapper.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
