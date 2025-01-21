@@ -1,9 +1,6 @@
 package br.com.alfac.videostudio.infra.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 public class LogEntity implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer usuarioId;
