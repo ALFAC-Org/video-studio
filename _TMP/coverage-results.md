@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 47.12%               |
-| :heavy_check_mark: Number of Lines Covered | 286    |
-| :x: Number of Lines Missed  | 321     |
-| Total Number of Lines   | 607     |
+| Code Coverage %         | 47.64%               |
+| :heavy_check_mark: Number of Lines Covered | 293    |
+| :x: Number of Lines Missed  | 322     |
+| Total Number of Lines   | 615     |
 
 
 ## Details:
@@ -397,31 +397,27 @@
         
 #### Lines Missed:
         
-- Line #28
+- Line #32
 ```
     }
 ```
-- Line #34
+- Line #37
 ```
     }
 ```
-- Line #39
+- Line #49
 ```
     }
 ```
-- Line #51
+- Line #57
 ```
     }
 ```
-- Line #59
+- Line #65
 ```
     }
 ```
-- Line #67
-```
-    }
-```
-- Line #72
+- Line #70
 ```
     }
 ```
@@ -494,6 +490,18 @@
 
         
 #### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: LogServiceConfig.java
+    </summary>
+
+        
+#### Lines Missed:
         
 </details>
 
