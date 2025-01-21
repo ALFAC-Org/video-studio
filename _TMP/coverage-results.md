@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 49.38%               |
-| :heavy_check_mark: Number of Lines Covered | 279    |
-| :x: Number of Lines Missed  | 286     |
-| Total Number of Lines   | 565     |
+| Code Coverage %         | 61.7%               |
+| :heavy_check_mark: Number of Lines Covered | 414    |
+| :x: Number of Lines Missed  | 257     |
+| Total Number of Lines   | 671     |
 
 
 ## Details:
@@ -45,7 +45,6 @@
 </details>
 
     
-### br/com/alfac/videostudio/infra/dto
 
 <details>
     <summary>
@@ -55,22 +54,6 @@
         
 #### Lines Missed:
         
-- Line #16
-```
-    }
-```
-- Line #20
-```
-    }
-```
-- Line #28
-```
-    }
-```
-- Line #36
-```
-    }
-```
 </details>
 
     
@@ -83,17 +66,10 @@
         
 #### All Lines Covered!
         
-- Line #24
-```
-    }
-```
-- Line #32
-```
-    }
-```
 </details>
 
     
+### br/com/alfac/videostudio/infra/handler
 
 <details>
     <summary>
@@ -123,22 +99,9 @@
         
 #### Lines Missed:
         
-- Line #29
-```
-    }
-```
-- Line #37
-```
-    }
-```
-- Line #45
-```
-    }
-```
 </details>
 
     
-### br/com/alfac/videostudio/infra/handler
 
 <details>
     <summary>
@@ -146,16 +109,8 @@
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #8
-```
-    }
-```
-- Line #16
-```
-    }
-```
 </details>
 
     
@@ -229,14 +184,25 @@
         
 #### Lines Missed:
         
-- Line #18
+- Line #16
+```
+    }
+```
+- Line #20
+```
+    }
+```
+- Line #28
+```
+    }
+```
+- Line #36
 ```
     }
 ```
 </details>
 
     
-### br/com/alfac/videostudio/infra/persistence
 
 <details>
     <summary>
@@ -246,11 +212,11 @@
         
 #### Lines Missed:
         
-- Line #78
+- Line #24
 ```
     }
 ```
-- Line #84
+- Line #32
 ```
     }
 ```
@@ -302,32 +268,12 @@
 
 <details>
     <summary>
-:heavy_check_mark: StatusVideo.java
+:x: UsuarioEntity.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
-- Line #38
-```
-    }
-```
-- Line #46
-```
-    }
-```
-- Line #54
-```
-    }
-```
-- Line #62
-```
-    }
-```
-- Line #70
-```
-    }
-```
 - Line #78
 ```
     }
@@ -342,11 +288,9 @@
 
 <details>
     <summary>
-:heavy_check_mark: Usuario.java
+:x: VideoEntityRepository.java
     </summary>
 
-        
-#### All Lines Covered!
         
 </details>
 
@@ -377,7 +321,7 @@
 
 <details>
     <summary>
-:heavy_check_mark: SecurityConfig.java
+:heavy_check_mark: StatusVideo.java
     </summary>
 
         
@@ -389,29 +333,25 @@
 
 <details>
     <summary>
-:x: S3Config.java
+:heavy_check_mark: Usuario.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: Video.java
     </summary>
 
         
 #### Lines Missed:
         
-- Line #18
-```
-    }
-```
-- Line #26
-```
-    }
-```
-- Line #34
-```
-    }
-```
-- Line #42
-```
-    }
-```
-- Line #50
+- Line #67
 ```
     }
 ```
@@ -421,7 +361,7 @@
 
 <details>
     <summary>
-:heavy_check_mark: Video.java
+:heavy_check_mark: UsuarioLogado.java
     </summary>
 
         
@@ -440,6 +380,22 @@
         
 #### All Lines Covered!
         
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3Config.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #53
+```
+                .build();
+```
 </details>
 
     
@@ -496,16 +452,15 @@
 
 <details>
     <summary>
-:heavy_check_mark: ControladorVideo.java
+:x: ControladorVideo.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
     
-### br/com/alfac/videostudio/infra/gateways
 
 <details>
     <summary>
@@ -518,30 +473,104 @@
 </details>
 
     
+### br/com/alfac/videostudio/infra/gateways
 
 <details>
     <summary>
-:x: RepositorioVideoGatewayImpl.java
+:heavy_check_mark: RepositorioVideoGatewayImpl.java
     </summary>
 
         
 #### All Lines Covered!
         
-- Line #42
-```
-        }
-```
 </details>
 
     
 
 <details>
     <summary>
-:x: RepositorioUsuarioGatewayImpl.java
+:heavy_check_mark: RepositorioUsuarioGatewayImpl.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: BucketGatewayImpl.java
     </summary>
 
         
 #### Lines Missed:
+        
+- Line #37
+```
+                    .key(objectKey)
+```
+- Line #42
+```
+                    .getObjectRequest(getObjectRequest)
+```
+- Line #55
+```
+                .key(key)
+```
+- Line #59
+```
+    }
+```
+- Line #65
+```
+                    .key(fileName)
+```
+- Line #71
+```
+        } catch (S3Exception e) {
+```
+</details>
+
+    
+### br/com/alfac/videostudio/core/application/adapters/gateways
+
+<details>
+    <summary>
+:x: BucketGateway.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: RepositorioVideoGateway.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: RepositorioUsuarioGateway.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: IUsuarioLogado.java
+    </summary>
+
         
 </details>
 
@@ -598,35 +627,6 @@
                 });
 ```
 - Line #68
-```
-    }
-```
-</details>
-
-    
-### br/com/alfac/videostudio/infra/config/security
-
-<details>
-    <summary>
-:x: CustomUserDetailsService.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: JwtAuthenticationFilter.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #58
 ```
     }
 ```
@@ -692,10 +692,6 @@
         
 #### Lines Missed:
         
-- Line #15
-```
-    }
-```
 </details>
 
     
@@ -767,28 +763,7 @@
         
 #### Lines Missed:
         
-- Line #18
-```
-    }
-```
-</details>
-
-    
-### br/com/alfac/videostudio/core/exception/usuario
-
-<details>
-    <summary>
-:x: UsuarioError.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #18
-```
-    }
-```
-- Line #22
+- Line #19
 ```
     }
 ```
@@ -873,6 +848,18 @@
 
 <details>
     <summary>
+:heavy_check_mark: UsuarioEntityMapper.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :heavy_check_mark: UsuarioMapper.java
     </summary>
 
@@ -926,18 +913,6 @@
 
         
 #### Lines Missed:
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:heavy_check_mark: VideoEntityMapper.java
-    </summary>
-
-        
-#### All Lines Covered!
         
 </details>
 
