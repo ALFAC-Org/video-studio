@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/usuarios/**").permitAll()
                         .requestMatchers("/api/v1/login/**").permitAll()
                         .requestMatchers("/api/v1/health-check/**").permitAll()
+                        .requestMatchers("/api/v1/terms/**").permitAll()
                         .requestMatchers("/swagger-resources/**", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
