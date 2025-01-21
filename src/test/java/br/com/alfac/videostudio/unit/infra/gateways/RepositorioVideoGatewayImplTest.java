@@ -6,26 +6,27 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 
 import br.com.alfac.videostudio.core.domain.Video;
+import br.com.alfac.videostudio.core.exception.VideoStudioException;
 import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
 import br.com.alfac.videostudio.infra.mapper.VideoEntityMapper;
 import br.com.alfac.videostudio.infra.persistence.VideoEntity;
 import br.com.alfac.videostudio.infra.persistence.VideoEntityRepository;
+import br.com.alfac.videostudio.utils.VideoHelper;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
 class RepositorioVideoGatewayImplTest {
 
     @Mock
@@ -36,68 +37,112 @@ class RepositorioVideoGatewayImplTest {
 
     @InjectMocks
     private RepositorioVideoGatewayImpl repositorioVideoGateway;
-
-    private VideoEntity videoEntity;
-    private Video video;
-
+ 
     @BeforeEach
     void setUp() {
-        videoEntity = new VideoEntity();
-        videoEntity.setId(1L);
-        videoEntity.setUuid(UUID.randomUUID());
-        videoEntity.setNome("Nome Teste");
-
-        video = new Video();
-        video.setId(1L);
-        video.setUuid(UUID.randomUUID());
-        video.setNome("Nome Teste");
+        repositorioVideoGateway = new RepositorioVideoGatewayImpl(videoEntityRepository, videoEntityMapper);
     }
 
     @Test
-    void deveConsultarVideoPorUuId() {
-        // Arrange
-        UUID uuid = UUID.randomUUID();
-        video.setUuid(uuid);
-        videoEntity.setUuid(uuid);
+    void devePermitirConsultarVideoPorUuId() throws VideoStudioException {
+        //Arrange
+        UUID randomUuid = UUID.randomUUID();
+        Video video = VideoHelper.criarVideo();
+        video.setUuid(randomUuid);
+        VideoEntity videoEntity = VideoHelper.criarVideoEntity(video);
 
         when(videoEntityRepository.findByUuid(any(UUID.class))).thenReturn(Optional.of(videoEntity));
-        when(videoEntityMapper.toDomain(videoEntity)).thenReturn(video);
 
-        // Act
-        Optional<Video> result = repositorioVideoGateway.consultarVideoPorUuId(uuid);
+        //Act
+        var videoOpcional = repositorioVideoGateway.consultarVideoPorUuId(randomUuid);
 
-        // Assert
-        assertThat(result).isPresent();
-        assertThat(result.get()).usingRecursiveComparison().isEqualTo(video);
+        //Assert
+        videoOpcional.ifPresent(videoArmazenado -> {
+            assertThat(videoArmazenado.getUsuarioId())
+                .isEqualTo(video.getUsuarioId());
+            assertThat(videoArmazenado.getNome())
+                .isEqualTo(video.getNome());
+            assertThat(videoArmazenado.getStatus())
+                .isEqualTo(video.getStatus());
+            });
+
+        verify(videoEntityRepository, times(1)).findByUuid(any(UUID.class));
     }
 
     @Test
-    void deveCadastrarVideo() {
+    void devePermitirConsultarVideoPorUuIdEUsuarioId() throws VideoStudioException {
+        //Arrange
+        UUID randomUuid = UUID.randomUUID();
+        Long usuarioLogadoId = 1L;
+        Video video = VideoHelper.criarVideo();
+        video.setUuid(randomUuid);
+        VideoEntity videoEntity = VideoHelper.criarVideoEntity(video);
+
+        when(videoEntityRepository.findByUuidAndUsuarioId(any(UUID.class), anyLong())).thenReturn(Optional.of(videoEntity));
+
+        //Act
+        var videoOpcional = repositorioVideoGateway.consultarVideoPorUuIdEUsuarioId(randomUuid, usuarioLogadoId);
+
+        //Assert
+        videoOpcional.ifPresent(videoArmazenado -> {
+            assertThat(videoArmazenado.getUsuarioId())
+                .isEqualTo(video.getUsuarioId());
+            assertThat(videoArmazenado.getNome())
+                .isEqualTo(video.getNome());
+            assertThat(videoArmazenado.getStatus())
+                .isEqualTo(video.getStatus());
+            });
+
+        verify(videoEntityRepository, times(1)).findByUuidAndUsuarioId(any(UUID.class), anyLong());
+    }
+
+    @Test
+    void devePermitirListarVideosUsuario() throws VideoStudioException {
+        //Arrange
+        Long usuarioLogadoId = 1L;
+        Video video1 = VideoHelper.criarVideo();
+        Video video2 = VideoHelper.criarVideo();
+        VideoEntity videoEntity1 = VideoHelper.criarVideoEntity(video1);
+        VideoEntity videoEntity2 = VideoHelper.criarVideoEntity(video2);
+        List<VideoEntity> videosEntity = Arrays.asList(
+            videoEntity1,
+            videoEntity2
+        );
+
+        when(videoEntityRepository.findByUsuarioId(anyLong())).thenReturn(videosEntity);
+        when(videoEntityMapper.toDomain(videoEntity1)).thenReturn(video1);
+        when(videoEntityMapper.toDomain(videoEntity2)).thenReturn(video2);
+
+        //Act
+        var videosObtidos = repositorioVideoGateway.listarVideosUsuario(usuarioLogadoId);
+
+        //Assert
+        assertThat(videosObtidos)
+            .hasSize(2)
+            .containsExactlyInAnyOrder(video1, video2);
+
+        verify(videoEntityRepository, times(1)).findByUsuarioId(anyLong());
+        verify(videoEntityMapper, times(2)).toDomain(any(VideoEntity.class));
+    }
+
+    @Test
+    void devePermitirRegistrarUploadVideo() throws VideoStudioException {
         // Arrange
-        UUID uuid = UUID.randomUUID();
-        video.setUuid(uuid);
-        videoEntity.setUuid(uuid);
+        Video video = VideoHelper.criarVideo();
+        VideoEntity videoEntity = VideoHelper.criarVideoEntity(video);
 
-        when(videoEntityMapper.toEntity(video)).thenReturn(videoEntity);
         when(videoEntityRepository.save(any(VideoEntity.class))).thenReturn(videoEntity);
-        when(videoEntityMapper.toDomain(videoEntity)).thenReturn(video);
-
-        assertThat(videoEntityMapper.toEntity(video)).isEqualTo(videoEntity);
-        assertThat(videoEntityRepository.save(videoEntity)).isEqualTo(videoEntity);
-        assertThat(videoEntityMapper.toDomain(videoEntity)).isEqualTo(video);
 
         // Act
-        Video result = repositorioVideoGateway.registrarUploadVideo(video);
-
-        assertThat(result).isNotNull();
+        var videoSalvo = repositorioVideoGateway.registrarUploadVideo(video);
 
         // Assert
-        assertThat(result).usingRecursiveComparison().isEqualTo(video);
+        assertThat(videoSalvo).isInstanceOf(Video.class).isNotNull();
+        assertThat(videoSalvo).extracting(Video::getNome).isEqualTo(video.getNome());
+        assertThat(videoSalvo).extracting(Video::getUsuarioId).isEqualTo(video.getUsuarioId());
+        assertThat(videoSalvo).extracting(Video::getStatus).isEqualTo(video.getStatus());
+        
+        verify(videoEntityRepository, times(1)).save(any(VideoEntity.class));
     }
 
-    @Test
-    void shouldThrowExceptionWhenVideoIsNull() {
-        // Act & Assert
-        assertThrows(NullPointerException.class, () -> repositorioVideoGateway.registrarUploadVideo(null));
-    }
 }

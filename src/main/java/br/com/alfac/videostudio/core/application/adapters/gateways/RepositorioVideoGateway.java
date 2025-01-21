@@ -9,8 +9,9 @@ import br.com.alfac.videostudio.core.domain.Video;
 public interface RepositorioVideoGateway {
 
     Optional<Video> consultarVideoPorUuId(UUID id);
+    Optional<Video> consultarVideoPorUuIdEUsuarioId(UUID id, Long usuarioId);
 
-    List<Video> listarVideosUsuario();
+    List<Video> listarVideosUsuario(Long usuarioId);
     
     Video registrarUploadVideo(Video video);
 

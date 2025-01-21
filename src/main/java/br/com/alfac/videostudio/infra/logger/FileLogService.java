@@ -15,7 +15,7 @@ public class FileLogService implements LogService {
 private String logFilePath;
 
 @Override
-    public void saveLog(Integer usuarioId, String resource, LocalDateTime datetime) {
+    public void saveLog(Long usuarioId, String resource, LocalDateTime datetime) {
         try (FileWriter writer = new FileWriter(logFilePath, true)) {
             writer.write(String.format("usuarioId: %s, Resource: %s, DateTime: %s%n", usuarioId, resource, datetime));
         } catch (IOException e) {

@@ -18,7 +18,7 @@ public class DatabaseLogService implements LogService {
     }
 
     @Override
-    public void saveLog(Integer usuarioId, String resource, LocalDateTime datetime) {
+    public void saveLog(Long usuarioId, String resource, LocalDateTime datetime) {
         LogEntity logeEntity = new LogEntity(usuarioId, resource, datetime);
         logRepository.save(logeEntity);
     }

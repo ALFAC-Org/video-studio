@@ -1,10 +1,13 @@
 package br.com.alfac.videostudio.unit.infra.handler;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import br.com.alfac.videostudio.core.domain.StatusVideo;
+import br.com.alfac.videostudio.core.domain.Usuario;
+import br.com.alfac.videostudio.core.domain.UsuarioLogado;
 import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.core.exception.VideoStudioError;
 import br.com.alfac.videostudio.core.exception.VideoStudioException;
@@ -24,8 +27,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
+import br.com.alfac.videostudio.core.application.adapters.gateways.IUsuarioLogado;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
 import br.com.alfac.videostudio.infra.handler.VideoHandler;
+import br.com.alfac.videostudio.utils.UsuarioHelper;
 import br.com.alfac.videostudio.utils.VideoHelper;
 
 class VideoHandlerTest {
@@ -37,6 +42,9 @@ class VideoHandlerTest {
 
     @Mock
     ControladorVideo controladorVideo;
+
+    @Mock
+    IUsuarioLogado usuarioLogadoImpl;
 
     @BeforeEach
     void setUp() {
@@ -50,30 +58,29 @@ class VideoHandlerTest {
     class ListarVideos {
         @Test
         void deveListarVideosUsuario() throws Exception {
-            Video video = new Video();
-            video.setId(1L);
-            video.setNome("Ayrton Senna");
-            video.setStatus(StatusVideo.PENDENTE);
-
-            VideoDTO videoDTO = VideoHelper.criarVideoDTO(video);
+            UsuarioLogado usuarioLogado = UsuarioHelper.criarUsuarioLogado();
+            VideoDTO videoDTO = VideoHelper.criarVideoDTO();
             List<VideoDTO> videoDTOList = Arrays.asList(videoDTO);
 
-            when(controladorVideo.listarVideosUsuario()).thenReturn(videoDTOList);
+            when(controladorVideo.listarVideosUsuario(anyLong())).thenReturn(videoDTOList);
+            when(usuarioLogadoImpl.getUsuarioLogado()).thenReturn(usuarioLogado);
 
-            mockMvc.perform(get("/api/v1/videos/johndoe")
+            mockMvc.perform(get("/api/v1/videos")
                                     .contentType(MediaType.APPLICATION_JSON)
                             // .header("Authorization", "Bearer token"))
                     ).andExpect(status().isOk())
-                    .andExpect(jsonPath("$.[0].id").value(videoDTO.getId().toString()))
                     .andExpect(jsonPath("$.[0].nome").value(videoDTO.getNome()))
                     .andExpect(jsonPath("$.[0].status").value(videoDTO.getStatus().name()));
         }
 
         @Test
         void deveRetornarNenhumVideoCadastrado() throws Exception {
-            when(controladorVideo.listarVideosUsuario()).thenThrow(new VideoStudioException(VideoError.VIDEOS_NOT_FOUND));
+            UsuarioLogado usuarioLogado = UsuarioHelper.criarUsuarioLogado();
 
-            mockMvc.perform(get("/api/v1/videos/johndoe")
+            when(controladorVideo.listarVideosUsuario(anyLong())).thenThrow(new VideoStudioException(VideoError.VIDEOS_NOT_FOUND));
+            when(usuarioLogadoImpl.getUsuarioLogado()).thenReturn(usuarioLogado);
+
+            mockMvc.perform(get("/api/v1/videos")
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isNotFound())
                     .andExpect(content().string("Vídeos não encontrados"));

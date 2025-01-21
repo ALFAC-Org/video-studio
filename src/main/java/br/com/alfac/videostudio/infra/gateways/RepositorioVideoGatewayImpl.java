@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Component
 public class RepositorioVideoGatewayImpl implements RepositorioVideoGateway {
-    
+
     private final VideoEntityRepository videoEntityRepository;
     private final VideoEntityMapper videoEntityMapper;
 
@@ -31,8 +31,16 @@ public class RepositorioVideoGatewayImpl implements RepositorioVideoGateway {
     }
 
     @Override
-    public List<Video> listarVideosUsuario() {
-        var videoEntities = videoEntityRepository.findAll();
+    public Optional<Video> consultarVideoPorUuIdEUsuarioId(UUID id, Long usuarioId) {
+
+        Optional<VideoEntity> videoEntityOpt = videoEntityRepository.findByUuidAndUsuarioId(id, usuarioId);
+
+        return montarVideo(videoEntityOpt);
+    }
+
+    @Override
+    public List<Video> listarVideosUsuario(Long usuarioId) {
+        var videoEntities = videoEntityRepository.findByUsuarioId(usuarioId);
 
         List<Video> videos = new ArrayList<>();
 
@@ -45,7 +53,7 @@ public class RepositorioVideoGatewayImpl implements RepositorioVideoGateway {
     }
 
     @Override
-    public Video registrarUploadVideo(Video video){
+    public Video registrarUploadVideo(Video video) {
         VideoEntity videoEntity = VideoEntityMapper.INSTANCE.toEntity(video);
         videoEntity.setUuid(UUID.randomUUID());
 

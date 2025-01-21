@@ -14,7 +14,7 @@ public class LogEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer usuarioId;
+    private Long usuarioId;
 
     @NotBlank(message = "Recurso é obrigatório")
     private String resource;
@@ -25,7 +25,7 @@ public class LogEntity implements Serializable {
     public LogEntity() {
     }
 
-    public LogEntity(Integer usuarioId, String resource, LocalDateTime dataCriacao) {
+    public LogEntity(Long usuarioId, String resource, LocalDateTime dataCriacao) {
         this.usuarioId = usuarioId;
         this.resource = resource;
         this.dataCriacao = dataCriacao;
@@ -40,11 +40,11 @@ public class LogEntity implements Serializable {
         return id;
     }
 
-    public Integer getUsuarioId() {
+    public Long getUsuarioId() {
         return usuarioId;
     }
 
-    public void setUsuarioId(Integer usuarioId) {
+    public void setUsuarioId(Long usuarioId) {
         this.usuarioId = usuarioId;
     }
 

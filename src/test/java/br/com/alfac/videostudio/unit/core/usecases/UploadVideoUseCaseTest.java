@@ -12,9 +12,10 @@ import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.utils.VideoHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,43 +28,30 @@ class UploadVideoUseCaseTest {
     private UploadVideoUseCase uploadVideoUseCase;
 
     @Test
-    void deveDevolverUmCliente() {
+    void deveRegistrarUploadDeUmVideo() {
         // Arrange
+        Long usuarioLogadoId = 1L;
         VideoDTO videoDTO = VideoHelper.criarVideoDTO();
         Video video = VideoHelper.criarVideo();
+        
         when(repositorioVideoGateway.registrarUploadVideo(any(Video.class))).thenReturn(video);
 
-        // Act
-        Video execute = uploadVideoUseCase.execute(videoDTO);
+        //Act
+        Video videoRetornado = uploadVideoUseCase.execute(usuarioLogadoId, videoDTO);
 
-        // Assert
-        var clienteRetornado = assertThat(execute)
-                .isInstanceOf(Video.class);
+        //Assert
+        assertThat(videoRetornado).isInstanceOf(Video.class).isNotNull();
+        assertThat(videoRetornado.getNome()).isEqualTo(video.getNome());
+        assertThat(videoRetornado.getStatus()).isEqualTo(video.getStatus());
+        assertThat(videoRetornado.getUuid()).isNotNull();
 
-        clienteRetornado
-                .extracting(Video::getNome)
-                .isEqualTo(video.getNome());
-        clienteRetornado
-                .extracting(Video::getStatus)
-                .isEqualTo(video.getStatus());
+        verify(repositorioVideoGateway, times(1)).registrarUploadVideo(any(Video.class));
     }
 
     @Test
-    void execute() {
-        // Arrange
-        when(repositorioVideoGateway.registrarUploadVideo(any(Video.class))).thenReturn(new Video());
-
-        // Act
-        Video execute = uploadVideoUseCase.execute(new VideoDTO());
-
-        // Assert
-        assertNotNull(execute);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenClienteDTOIsNull() {
+    void deveGerarExcecaoQuandoVideoDTOIsNull() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> uploadVideoUseCase.execute(null));
+        assertThrows(NullPointerException.class, () -> uploadVideoUseCase.execute(1L, null));
     }
 
 }
