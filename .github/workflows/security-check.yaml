@@ -40,7 +40,7 @@ jobs:
           docker run --rm \
             -v $(pwd):/src \
             -e NVD_API_KEY=${OWASP_NVD_API_KEY} \
-            jeremylong/DependencyCheck \
+            izhar0407/dependency-check \
             --project "video-studio" \
             --scan /src \
             --format "ALL" \
