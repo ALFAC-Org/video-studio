@@ -22,4 +22,4 @@ jobs:
 
       - name: Run OWASP Dependency-Check
         run: |
-          mvn dependency-check:check -DnvdApiKey=${{ secrets.OWASP_NVD_API_KEY }} -DnvdFailBuildOnCVSS=9
+          mvn dependency-check:check -DnvdApiKey=${{ secrets.OWASP_NVD_API_KEY }} -DfailBuildOnCVSS=${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
