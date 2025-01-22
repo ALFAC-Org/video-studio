@@ -13,12 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Java JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          java-version: "17"
-          cache: "maven"
+#      - name: Set up Java JDK
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: "temurin"
+#          java-version: "17"
+#          cache: "maven"
       #
       #      - name: Cache OWASP Dependency-Check data
       #        uses: actions/cache@v3
@@ -44,5 +44,5 @@ jobs:
             --project "video-studio" \
             --scan /src \
             --format "ALL" \
-            --out ./target/dependency-check \
+            --out /src/target/dependency-check-report \
             --failOnCVSS ${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
