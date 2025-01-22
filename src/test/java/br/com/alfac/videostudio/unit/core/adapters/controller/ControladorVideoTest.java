@@ -53,10 +53,10 @@ class ControladorVideoTest {
     @Test
     void devePermitirUploadVideo() throws VideoStudioException {
         // Arrange
-        when(uploadVideoUseCase.execute(any(Long.class), any(VideoDTO.class))).thenReturn(VideoHelper.criarVideo());
+        when(uploadVideoUseCase.execute(any(Long.class), any(VideoDTO.class), any())).thenReturn(VideoHelper.criarVideo());
 
         // Act
-        VideoDTO videoDTO = controladorVideo.uploadVideo(1L, VideoHelper.criarVideoDTO());
+        VideoDTO videoDTO = controladorVideo.uploadVideo(1L, VideoHelper.criarVideoDTO(), null);
 
         // Assert
         assertThat(videoDTO).isNotNull().isInstanceOf(VideoDTO.class);

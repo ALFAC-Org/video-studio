@@ -16,13 +16,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class VideoStudioConfiguration {
 
+    @Value("${s3.bucket-video-to-process}")
+    private String bucketVideoParaProcessar;
+
     @Value("${s3.bucket-file-processed}")
     private String bucketArquivoProcessado;
 
     @Bean
     public ControladorVideo controladorVideo(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final BucketGateway bucketGateway) {
         ListarVideosUseCase listarVideosUseCase = new ListarVideosUseCase(repositorioVideoGatewayImpl);
-        UploadVideoUseCase uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGatewayImpl);
+        UploadVideoUseCase uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway, bucketVideoParaProcessar);
         DownloadVideoUseCase downloadVideoUseCase = new DownloadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway, bucketArquivoProcessado);
         return new ControladorVideo(listarVideosUseCase, uploadVideoUseCase, downloadVideoUseCase);
     }

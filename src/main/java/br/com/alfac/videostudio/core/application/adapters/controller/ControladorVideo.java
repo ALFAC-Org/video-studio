@@ -31,8 +31,8 @@ public class ControladorVideo {
         return VideoPresenter.mapearParaVideoDTOList(videoList);
     }
 
-    public VideoDTO uploadVideo(Long usuarioId, VideoDTO video) {
-        Video videoCadastrado = uploadVideoUseCase.execute(usuarioId, video);
+    public VideoDTO uploadVideo(Long usuarioId, VideoDTO video, byte[] file) {
+        Video videoCadastrado = uploadVideoUseCase.execute(usuarioId, video, file);
         return VideoPresenter.mapearParaVideoDTO(videoCadastrado);
     }
 

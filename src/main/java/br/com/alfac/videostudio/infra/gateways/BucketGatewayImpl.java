@@ -49,13 +49,13 @@ public class BucketGatewayImpl implements BucketGateway {
 
     }
 
-    public void uploadFile(String key, Path filePath, String bucketName) {
+    public void uploadFile(String key, byte[] file, String bucketName) {
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
                 .build();
 
-        s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromFile(filePath));
+        s3Client.putObject(putObjectRequest, software.amazon.awssdk.core.sync.RequestBody.fromBytes(file));
     }
 
     private boolean checkIfFileExists(S3Client s3Client, String bucketName, String fileName) {
