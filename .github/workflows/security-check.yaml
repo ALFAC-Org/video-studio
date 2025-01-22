@@ -44,5 +44,5 @@ jobs:
             --project "video-studio" \
             --scan /src \
             --format "ALL" \
-            --out ./src/target/dependency-check-report \
+            --out ./_TMP \
             --failOnCVSS ${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
