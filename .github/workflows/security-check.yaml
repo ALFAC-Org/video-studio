@@ -39,10 +39,10 @@ jobs:
         run: |
           docker run --rm \
             -v $(pwd):/src \
-            -e NVD_API_KEY=${OWASP_NVD_API_KEY} \
+            -e NVD_API_KEY=${{ secrets.OWASP_NVD_API_KEY }} \
             izhar0407/dependency-check \
             --project "video-studio" \
             --scan /src \
             --format "ALL" \
             --out ./target/dependency-check-report \
-            --failOnCVSS ${OWASP_FAIL_BUILD_ON_CVSS_LEVEL}
+            --failOnCVSS ${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
