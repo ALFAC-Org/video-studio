@@ -262,7 +262,7 @@
                         <format>JSON</format>
                     </formats>
                     <prettyPrint>true</prettyPrint>
-                    <outputDirectory>${project.basedir}/target/dependency-check</outputDirectory>
+                    <outputDirectory>${project.basedir}/target/dependency-check-report</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
