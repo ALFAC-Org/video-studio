@@ -36,8 +36,8 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      - name: Create target directory
-        run: mkdir -p src/report
+#      - name: Create target directory
+#        run: mkdir -p src/report
 
       - name: Run OWASP Dependency-Check
         run: |
@@ -48,5 +48,5 @@ jobs:
             --project "video-studio" \
             --scan /src \
             --format "ALL" \
-            --out ./report  \
+            --out ./src  \
             --failOnCVSS ${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
