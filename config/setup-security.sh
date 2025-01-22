@@ -3,6 +3,7 @@
 OWASPDC_DIRECTORY=$HOME/OWASP-Dependency-Check-PUBLIC
 DATA_DIRECTORY="$OWASPDC_DIRECTORY/data"
 REPORT_DIRECTORY="$OWASPDC_DIRECTORY/reports"
+FAIL_ON_CVSS=$1
 
 if [ ! -d "$DATA_DIRECTORY" ]; then
     echo "Initially creating persistent directories"
@@ -27,4 +28,5 @@ docker run --rm \
     --nodePackageSkipDevDependencies \
     --format "ALL" \
     --project "video-studio" \
+    --failOnCVSS $FAIL_ON_CVSS \
     --out /report
