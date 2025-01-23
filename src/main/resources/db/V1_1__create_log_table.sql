@@ -1,0 +1,6 @@
+CREATE TABLE log (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INTEGER,
+    resource VARCHAR(255) NOT NULL,
+    data_criacao TIMESTAMP NOT NULL
+);

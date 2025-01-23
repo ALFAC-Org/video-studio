@@ -39,3 +39,6 @@ build/
 .terraform
 .terraform.lock.hcl
 .DS_Store
+
+## Logs ##
+logs/*.txt
