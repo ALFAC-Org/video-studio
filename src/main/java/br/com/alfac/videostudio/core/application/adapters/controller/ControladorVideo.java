@@ -10,7 +10,6 @@ import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.core.exception.VideoStudioException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class ControladorVideo {

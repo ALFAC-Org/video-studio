@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS videostudiodb;
+CREATE DATABASE IF NOT EXISTS videodb;
 
-USE videostudiodb;
+USE videodb;
 
 CREATE TABLE IF NOT EXISTS usuario (
     id int auto_increment  primary key,
