@@ -1,0 +1,17 @@
+name: Security Check
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run OWASP Dependency-Check
+        run: sh ./config/setup-security.sh ${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
