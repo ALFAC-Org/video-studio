@@ -1,22 +1,33 @@
 package br.com.alfac.videostudio.core.application.usecases;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+
 import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
+import br.com.alfac.videostudio.core.application.adapters.gateways.QueueGateway;
 import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioVideoGateway;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
+import br.com.alfac.videostudio.core.application.dto.VideoProcessarDTO;
 import br.com.alfac.videostudio.core.domain.Video;
 
 public class UploadVideoUseCase {
 
     private final RepositorioVideoGateway videoRepository;
 
+    private final QueueGateway queueGateway;
+
+    private final String queueName;
+
     private final BucketGateway bucketGateway;
 
     private final String bucketName;
 
-    public UploadVideoUseCase(final RepositorioVideoGateway videoRepository, final BucketGateway bucketGateway, final String bucketName) {
+    public UploadVideoUseCase(final RepositorioVideoGateway videoRepository, final BucketGateway bucketGateway, final String bucketName, final QueueGateway queueGateway, final String queueName) {
         this.videoRepository = videoRepository;
         this.bucketGateway = bucketGateway;
         this.bucketName = bucketName;
+        this.queueGateway = queueGateway;
+        this.queueName = queueName;
     }
 
     public Video execute(Long usuarioId, VideoDTO videoDTO, byte[] file) {
@@ -31,8 +42,12 @@ public class UploadVideoUseCase {
         //Copia o video para bucket
         bucketGateway.uploadFile(fileName, file, bucketName);
 
-        //Usar o uuid para enviar para a fila de processamento
-        //videoCadastrado.getUuid();
+        //Cria objeto de mensagem para a fila
+        VideoProcessarDTO videoProcessarDTO = new VideoProcessarDTO();
+        videoProcessarDTO.setVideoName(fileName);
+
+        //Envia mensagem para a fila para notificar que vídeo está disponível para processamento
+        queueGateway.sendMessage(queueName, new Gson().toJson(videoProcessarDTO));
 
         return videoCadastrado;
     }

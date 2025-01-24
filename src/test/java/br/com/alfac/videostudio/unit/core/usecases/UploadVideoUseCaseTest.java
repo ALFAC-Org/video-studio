@@ -3,18 +3,17 @@ package br.com.alfac.videostudio.unit.core.usecases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
+import br.com.alfac.videostudio.core.application.adapters.gateways.QueueGateway;
 import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioVideoGateway;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
 import br.com.alfac.videostudio.core.application.usecases.UploadVideoUseCase;
 import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.utils.VideoHelper;
-import io.cucumber.java.Before;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,6 +31,9 @@ class UploadVideoUseCaseTest {
     private RepositorioVideoGateway repositorioVideoGateway;
     
     @Mock
+    private QueueGateway queueGateway;
+    
+    @Mock
     private BucketGateway bucketGateway;
 
     private UploadVideoUseCase uploadVideoUseCase;
@@ -39,8 +41,9 @@ class UploadVideoUseCaseTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        String queueNameMock = "mocked-queue-name";
         String bucketNameMock = "mocked-bucket-name";
-        uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGateway, bucketGateway, bucketNameMock);
+        uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGateway, bucketGateway, bucketNameMock, queueGateway, queueNameMock);
     }
 
     @Test
@@ -53,6 +56,7 @@ class UploadVideoUseCaseTest {
         
         when(repositorioVideoGateway.registrarUploadVideo(any(Video.class))).thenReturn(video);
         doNothing().when(bucketGateway).uploadFile(anyString(), any(), anyString());
+        doNothing().when(queueGateway).sendMessage(anyString(), anyString());
 
         //Act
         Video videoRetornado = uploadVideoUseCase.execute(usuarioLogadoId, videoDTO, file);
@@ -65,6 +69,7 @@ class UploadVideoUseCaseTest {
 
         verify(repositorioVideoGateway, times(1)).registrarUploadVideo(any(Video.class));
         verify(bucketGateway, times(1)).uploadFile(anyString(), any(), anyString());
+        verify(queueGateway, times(1)).sendMessage(anyString(), anyString());
     }
 
     @Test

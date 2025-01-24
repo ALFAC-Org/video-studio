@@ -3,6 +3,7 @@ package br.com.alfac.videostudio.infra.config.beans;
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorUsuario;
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
 import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
+import br.com.alfac.videostudio.core.application.adapters.gateways.QueueGateway;
 import br.com.alfac.videostudio.core.application.usecases.*;
 import br.com.alfac.videostudio.infra.gateways.RepositorioUsuarioGatewayImpl;
 import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
@@ -16,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class VideoStudioConfiguration {
 
+    @Value("${s3.queue-video-to-process}")
+    private String queueVideoParaProcessar;
+
     @Value("${s3.bucket-video-to-process}")
     private String bucketVideoParaProcessar;
 
@@ -23,9 +27,9 @@ public class VideoStudioConfiguration {
     private String bucketArquivoProcessado;
 
     @Bean
-    public ControladorVideo controladorVideo(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final BucketGateway bucketGateway) {
+    public ControladorVideo controladorVideo(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final BucketGateway bucketGateway, final QueueGateway queueGateway) {
         ListarVideosUseCase listarVideosUseCase = new ListarVideosUseCase(repositorioVideoGatewayImpl);
-        UploadVideoUseCase uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway, bucketVideoParaProcessar);
+        UploadVideoUseCase uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway, bucketVideoParaProcessar, queueGateway, queueVideoParaProcessar);
         DownloadVideoUseCase downloadVideoUseCase = new DownloadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway, bucketArquivoProcessado);
         return new ControladorVideo(listarVideosUseCase, uploadVideoUseCase, downloadVideoUseCase);
     }
