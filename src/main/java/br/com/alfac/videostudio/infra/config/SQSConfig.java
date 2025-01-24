@@ -2,9 +2,11 @@
 package br.com.alfac.videostudio.infra.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 import software.amazon.awssdk.services.sqs.SqsClient;
 
 import org.springframework.context.annotation.Bean;
@@ -27,6 +29,7 @@ public class SQSConfig {
     @Value("${cloud.aws.sqs.endpoint}")
     private String sqsEndpoint;
 
+
     @Bean
     public SqsClient sqsClient() {
         return SqsClient.builder()
@@ -36,5 +39,14 @@ public class SQSConfig {
                 .endpointOverride(URI.create(sqsEndpoint))  // Use apenas se estiver configurando endpoint personalizado
                 .build();
     }
-
+    @Bean
+    @Primary
+    public SqsAsyncClient sqsAsyncClient() {
+        return SqsAsyncClient.builder()
+                .endpointOverride(URI.create(sqsEndpoint)) // LocalStack Endpoint
+                .region(Region.US_EAST_1)
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(accessKey, secretKey))) // Credenciais mock para LocalStack
+                .build();
+    }
 }

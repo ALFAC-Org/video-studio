@@ -1,13 +1,12 @@
 package br.com.alfac.videostudio.infra.listener;
 
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import org.springframework.stereotype.Service;
-
-import io.awspring.cloud.messaging.listener.annotation.SqsListener;
 
 @Service
 public class VideoProcessadoListener {
 
-    @SqsListener("sqs.video.processado")
+    @SqsListener(value = "queue-video-to-process")
     public void receiveMessage(String message) {
         System.out.println("Mensagem recebida: " + message);
     }

@@ -33,8 +33,7 @@ public class S3Config {
     public S3Client s3Client() {
         return S3Client.builder()
                 .region(Region.of(awsRegion))
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(accessKey, secretKey)))
+                .credentialsProvider(getCredentialsProvider())
                 .endpointOverride(URI.create(s3Endpoint))
                 .serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())
                 .build();
@@ -46,7 +45,7 @@ public class S3Config {
         return S3Presigner.builder()
                 .endpointOverride(s3Client.serviceClientConfiguration().endpointOverride().get())
                 .region(s3Client.serviceClientConfiguration().region())
-                .credentialsProvider(s3Client.serviceClientConfiguration().credentialsProvider())
+                .credentialsProvider(getCredentialsProvider())
                 .serviceConfiguration(S3Configuration.builder()
                         .pathStyleAccessEnabled(true) // Força o uso de path-style
                         .build())
@@ -59,7 +58,12 @@ public class S3Config {
         return S3Presigner.builder()
                 .endpointOverride(s3Client.serviceClientConfiguration().endpointOverride().get())
                 .region(s3Client.serviceClientConfiguration().region())
-                .credentialsProvider(s3Client.serviceClientConfiguration().credentialsProvider())
+                .credentialsProvider(getCredentialsProvider())
                 .build();
+    }
+
+    private StaticCredentialsProvider getCredentialsProvider() {
+        return StaticCredentialsProvider.create(
+                AwsBasicCredentials.create(accessKey, secretKey));
     }
 }
