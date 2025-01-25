@@ -2,8 +2,10 @@ package br.com.alfac.videostudio.infra.config.beans;
 
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorUsuario;
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
+import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideoProcessado;
 import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
 import br.com.alfac.videostudio.core.application.adapters.gateways.QueueGateway;
+import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioVideoGateway;
 import br.com.alfac.videostudio.core.application.usecases.*;
 import br.com.alfac.videostudio.infra.gateways.RepositorioUsuarioGatewayImpl;
 import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
@@ -19,6 +21,9 @@ public class VideoStudioConfiguration {
 
     @Value("${s3.queue-video-to-process}")
     private String queueVideoParaProcessar;
+
+    @Value("${s3.queue-notification-error-processing}")
+    private String queueNotificacaoErroProcessamento;
 
     @Value("${s3.bucket-video-to-process}")
     private String bucketVideoParaProcessar;
@@ -45,6 +50,14 @@ public class VideoStudioConfiguration {
     public ObterUsuarioPorUsernameUseCase obterUsuarioPorUsername(final RepositorioUsuarioGatewayImpl repositorioUsuarioGatewayImpl) {
         return new ObterUsuarioPorUsernameUseCase(repositorioUsuarioGatewayImpl);
     }
+
+    @Bean
+    public ControladorVideoProcessado controladorVideoProcessado(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final QueueGateway queueGateway) {
+        AtualizarStatusVideoUseCase atualizarStatusVideoUseCase = new AtualizarStatusVideoUseCase(repositorioVideoGatewayImpl);
+        ErroProcessamentoVideoUseCase erroProcessamentoVideoUseCase = new ErroProcessamentoVideoUseCase(repositorioVideoGatewayImpl, queueGateway, queueNotificacaoErroProcessamento);
+        return new ControladorVideoProcessado(atualizarStatusVideoUseCase, erroProcessamentoVideoUseCase);
+    }
+
 
     @Bean
     public JwtTokenProvider jwtTokenProvider() {
