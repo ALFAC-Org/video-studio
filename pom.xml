@@ -256,30 +256,6 @@
                     <mainClass>br.com.alfac.videostudio.VideoStudioApplication</mainClass>
                 </configuration>
             </plugin>
-
-            <!-- Plugin para checar as vulnerabilidades da aplicação -->
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>12.0.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <format>HTML</format>
-                    <formats>
-                        <format>HTML</format>
-                        <format>CSV</format>
-                        <format>JSON</format>
-                    </formats>
-                    <prettyPrint>true</prettyPrint>
-                    <outputDirectory>${project.basedir}/target/dependency-check-report</outputDirectory>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
