@@ -90,12 +90,21 @@ jobs:
       - name: Set up environment
         run: echo "DB_HOST=${{ needs.setup-aws.outputs.db_host }}" >> $GITHUB_ENV
 
+      - name: Exibe variáveis de ambiente
+        run: echo "DB HOST é ${{ env.DB_HOST }}"
+
       - name: Update Kube Config
         run: aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
 
       - name: Update Docker Image in deployment.yaml
         run: |
           sed -i 's|image: carlohcs/video-studio|image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ env.BUILD_VERSION }}|g' k8s/prod/backend/deployment.yaml
+
+      - name: Get RDS endpoint
+        continue-on-error: true # if the DB is not set, we skip the remaining steps
+        run: |
+          DB_HOST=$(aws rds describe-db-instances --db-instance-identifier ${{ secrets.DB_IDENTIFIER }} --query "DBInstances[0].Endpoint.Address" --output text)
+          echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
 
       - name: Overwrite Kubernetes Secrets
         run: |
