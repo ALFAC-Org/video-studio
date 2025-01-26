@@ -11,10 +11,12 @@ import br.com.alfac.videostudio.infra.gateways.RepositorioUsuarioGatewayImpl;
 import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
 
 import br.com.alfac.videostudio.infra.security.JwtTokenProvider;
+import io.awspring.cloud.sns.core.SnsTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import software.amazon.awssdk.services.sns.SnsClient;
 
 @Configuration
 public class VideoStudioConfiguration {
@@ -52,9 +54,9 @@ public class VideoStudioConfiguration {
     }
 
     @Bean
-    public ControladorVideoProcessado controladorVideoProcessado(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final QueueGateway queueGateway) {
+    public ControladorVideoProcessado controladorVideoProcessado(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final SnsClient snsClient) {
         AtualizarStatusVideoUseCase atualizarStatusVideoUseCase = new AtualizarStatusVideoUseCase(repositorioVideoGatewayImpl);
-        ErroProcessamentoVideoUseCase erroProcessamentoVideoUseCase = new ErroProcessamentoVideoUseCase(repositorioVideoGatewayImpl, queueGateway, queueNotificacaoErroProcessamento);
+        ErroProcessamentoVideoUseCase erroProcessamentoVideoUseCase = new ErroProcessamentoVideoUseCase(repositorioVideoGatewayImpl, snsClient, queueNotificacaoErroProcessamento);
         return new ControladorVideoProcessado(atualizarStatusVideoUseCase, erroProcessamentoVideoUseCase);
     }
 

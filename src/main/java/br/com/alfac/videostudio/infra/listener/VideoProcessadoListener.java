@@ -16,7 +16,7 @@ public class VideoProcessadoListener {
     }
 
 
-    @SqsListener(value = "queue-video-to-process")
+    @SqsListener(value = "queue-video-processed")
     public void receiveMessage(String message) {
         System.out.println("Mensagem recebida: " + message);
 
