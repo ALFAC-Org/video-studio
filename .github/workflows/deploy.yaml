@@ -104,6 +104,7 @@ jobs:
         continue-on-error: true # if the DB is not set, we skip the remaining steps
         run: |
           DB_HOST=$(aws rds describe-db-instances --db-instance-identifier ${{ secrets.DB_IDENTIFIER }} --query "DBInstances[0].Endpoint.Address" --output text)
+          echo "DB HOST VINDO DO RDS ENDPOINT É $DB_HOST"
           echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
 
       - name: Overwrite Kubernetes Secrets
