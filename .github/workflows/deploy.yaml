@@ -102,7 +102,7 @@ jobs:
           kubectl create secret generic secret-video-studio \
             --from-literal=APPLICATION_VERSION=${{ env.BUILD_VERSION }} \
             --from-literal=ENABLE_FLYWAY=${{ secrets.ENABLE_FLYWAY }} \
-            --from-literal=SPRING_DATASOURCE_URL=jdbc:mysql://video-db.cm2fl7pdhlsm.us-east-1.rds.amazonaws.com:3306/${{ secrets.DB_NAME }} \
+            --from-literal=SPRING_DATASOURCE_URL=jdbc:mysql://${{ env.DB_HOST }}:3306/${{ secrets.DB_NAME }} \
             --from-literal=SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
             --from-literal=SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
             --dry-run=client -o yaml | kubectl apply -f -
