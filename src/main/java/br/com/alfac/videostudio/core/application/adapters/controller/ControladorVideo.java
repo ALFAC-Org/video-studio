@@ -30,7 +30,7 @@ public class ControladorVideo {
         return VideoPresenter.mapearParaVideoDTOList(videoList);
     }
 
-    public VideoDTO uploadVideo(Long usuarioId, VideoDTO video, byte[] file) {
+    public VideoDTO uploadVideo(Long usuarioId, VideoDTO video, byte[] file) throws VideoStudioException {
         Video videoCadastrado = uploadVideoUseCase.execute(usuarioId, video, file);
         return VideoPresenter.mapearParaVideoDTO(videoCadastrado);
     }

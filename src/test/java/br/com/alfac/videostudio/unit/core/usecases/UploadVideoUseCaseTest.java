@@ -11,15 +11,20 @@ import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway
 import br.com.alfac.videostudio.core.application.adapters.gateways.QueueGateway;
 import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioVideoGateway;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
+import br.com.alfac.videostudio.core.application.usecases.CadastrarUsuarioUseCase;
 import br.com.alfac.videostudio.core.application.usecases.UploadVideoUseCase;
+import br.com.alfac.videostudio.core.application.util.FileValidator;
 import br.com.alfac.videostudio.core.domain.Video;
+import br.com.alfac.videostudio.core.exception.VideoStudioException;
 import br.com.alfac.videostudio.utils.VideoHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,20 +45,23 @@ class UploadVideoUseCaseTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        //MockitoAnnotations.openMocks(this);
         String queueNameMock = "mocked-queue-name";
         String bucketNameMock = "mocked-bucket-name";
         uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGateway, bucketGateway, bucketNameMock, queueGateway, queueNameMock);
     }
 
     @Test
-    void deveRegistrarUploadDeUmVideo() {
-        // Arrange
+    void deveRegistrarUploadDeUmVideo() throws VideoStudioException {
+        //Arrange
         Long usuarioLogadoId = 1L;
-        byte[] file = null;
+        byte[] file = "conteudo".getBytes();
         VideoDTO videoDTO = VideoHelper.criarVideoDTO();
         Video video = VideoHelper.criarVideo();
-        
+
+        mockStatic(FileValidator.class);
+        when(FileValidator.isMp4File(any(byte[].class))).thenReturn(true);
+
         when(repositorioVideoGateway.registrarUploadVideo(any(Video.class))).thenReturn(video);
         doNothing().when(bucketGateway).uploadFile(anyString(), any(), anyString());
         doNothing().when(queueGateway).sendMessage(anyString(), anyString());
@@ -74,8 +82,30 @@ class UploadVideoUseCaseTest {
 
     @Test
     void deveGerarExcecaoQuandoVideoDTOIsNull() {
-        // Act & Assert
-        assertThrows(NullPointerException.class, () -> uploadVideoUseCase.execute(1L, null, null));
+        //Arrange
+        Long usuarioLogadoId = 1L;
+        byte[] file = "conteudo".getBytes();
+        VideoDTO videoDTO = null;
+
+        when(FileValidator.isMp4File(any(byte[].class))).thenReturn(true);
+
+        //Act & Assert
+        assertThrows(NullPointerException.class, () -> uploadVideoUseCase.execute(usuarioLogadoId, videoDTO, file));
+    }
+
+    @Test
+    void deveGerarExcecaoQuandoFormatoArquivoInvalido() {
+        //Arrange
+        Long usuarioLogadoId = 1L;
+        byte[] file = "conteudo".getBytes();
+        VideoDTO videoDTO = VideoHelper.criarVideoDTO();
+
+        when(FileValidator.isMp4File(any(byte[].class))).thenReturn(false);
+
+        //Act & Assert
+        assertThatThrownBy(() -> uploadVideoUseCase.execute(usuarioLogadoId, videoDTO, file))
+            .isInstanceOf(VideoStudioException.class)
+            .hasMessage("Formato de arquivo inválido");
     }
 
 }

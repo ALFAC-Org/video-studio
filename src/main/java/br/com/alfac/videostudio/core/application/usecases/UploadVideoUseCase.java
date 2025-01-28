@@ -1,6 +1,5 @@
 package br.com.alfac.videostudio.core.application.usecases;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
@@ -8,7 +7,10 @@ import br.com.alfac.videostudio.core.application.adapters.gateways.QueueGateway;
 import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioVideoGateway;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
 import br.com.alfac.videostudio.core.application.dto.VideoProcessarDTO;
+import br.com.alfac.videostudio.core.application.util.FileValidator;
 import br.com.alfac.videostudio.core.domain.Video;
+import br.com.alfac.videostudio.core.exception.VideoStudioException;
+import br.com.alfac.videostudio.core.exception.video.VideoError;
 
 public class UploadVideoUseCase {
 
@@ -30,7 +32,11 @@ public class UploadVideoUseCase {
         this.queueName = queueName;
     }
 
-    public Video execute(Long usuarioId, VideoDTO videoDTO, byte[] file) {
+    public Video execute(Long usuarioId, VideoDTO videoDTO, byte[] file) throws VideoStudioException {
+
+        if(FileValidator.isMp4File(file) == false){
+            throw new VideoStudioException(VideoError.VIDEO_INVALID);
+        }
 
         Video video = new Video(usuarioId, videoDTO.getNome());
 
