@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS video (
     status VARCHAR(100) NOT NULL,
     uuid BINARY(16) NOT NULL default(UNHEX(REPLACE(UUID(), '-', ''))),
     data_criacao datetime NOT NULL DEFAULT NOW(),
-    data_processamento datetime NULL
+    data_atualizacao datetime NULL
 
 );
 

@@ -1,7 +1,6 @@
 package br.com.alfac.videostudio.infra.handler;
 
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
-import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
 import br.com.alfac.videostudio.core.application.adapters.gateways.IUsuarioLogado;
 import br.com.alfac.videostudio.core.application.dto.DownloadDTO;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
@@ -15,22 +14,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -41,15 +32,11 @@ public class VideoHandler {
     private final ControladorVideo controladorVideo;
     private final VideoMapper videoMapper;
     private final IUsuarioLogado usuarioLogado;
-    private final BucketGateway bucketGateway;
-    @Value("${s3.bucket-video-to-process}")
-    private String bucketName;
 
-    public VideoHandler(final ControladorVideo controladorVideo, final VideoMapper videoMapper, final IUsuarioLogado usuarioLogado, BucketGateway s3Client) {
+    public VideoHandler(final ControladorVideo controladorVideo, final VideoMapper videoMapper, final IUsuarioLogado usuarioLogado) {
         this.controladorVideo = controladorVideo;
         this.videoMapper = videoMapper;
         this.usuarioLogado = usuarioLogado;
-        this.bucketGateway = s3Client;
     }
 
     @Operation(summary = "Listar videos do usuário")
@@ -71,17 +58,14 @@ public class VideoHandler {
                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ApiError.class))
             })})
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<VideoDTO> uploadVideo( @RequestParam("fileName") String fileName,
+    public ResponseEntity<VideoDTO> uploadVideo(@RequestParam("fileName") String fileName,
                                                 @RequestParam("file") MultipartFile file) throws VideoStudioException, IOException {
 
-        VideoDTO video = controladorVideo.uploadVideo(usuarioLogado.getUsuarioLogado().id(), videoMapper.toDTO(new VideoRequest(fileName)));
+        VideoDTO video = controladorVideo.uploadVideo(
+                usuarioLogado.getUsuarioLogado().id(), 
+                videoMapper.toDTO(new VideoRequest(fileName)),
+                file.getBytes());
 
-        Path tempFile = Files.createTempFile("upload-", video.getUuid().toString());
-        Files.copy(file.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
-
-        bucketGateway.uploadFile(video.getUuid().toString(), tempFile, bucketName);
-
-        Files.delete(tempFile);
         return new ResponseEntity<>(video, HttpStatus.CREATED);
     }
 

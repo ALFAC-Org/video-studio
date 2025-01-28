@@ -76,6 +76,12 @@ jobs:
           DB_HOST=$(aws rds describe-db-instances --db-instance-identifier ${{ secrets.DB_IDENTIFIER }} --query "DBInstances[0].Endpoint.Address" --output text)
           echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
 
+      - name: Get SNS Topic ARN (envia_email_erro_processamento)
+        continue-on-error: true # if the SNS topic is not set, we skip
+        run: |
+          SNS_TOPIC_ARN=$(aws sns list-topics --query "Topics[?ends_with(TopicArn, ':envia_email_erro_processamento')].TopicArn | [0]" --output text)
+          echo "SNS_TOPIC_ARN_ENVIA_EMAIL=$SNS_TOPIC_ARN" >> $GITHUB_ENV
+
       - name: Overwrite Kubernetes Secrets
         run: |
           kubectl create secret generic secret-video-studio \
@@ -84,6 +90,7 @@ jobs:
             --from-literal=SPRING_DATASOURCE_URL=jdbc:mysql://${{ env.DB_HOST }}:3306/${{ secrets.DB_NAME }} \
             --from-literal=SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
             --from-literal=SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            --from-literal=SNS_TOPIC_ARN_ENVIA_EMAIL=${{ env.SNS_TOPIC_ARN_ENVIA_EMAIL }} \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Kube Apply

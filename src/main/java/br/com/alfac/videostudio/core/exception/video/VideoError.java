@@ -9,7 +9,7 @@ public class VideoError extends VideoStudioErrosImpl {
     public static final VideoStudioError VIDEO_NOT_FOUND = new VideoError("001", "Vídeo não encontrado", StatusCode.NOT_FOUND);
     public static final VideoStudioError VIDEOS_NOT_FOUND = new VideoError("002", "Vídeos não encontrados", StatusCode.NOT_FOUND);
     public static final VideoStudioError VIDEO_NOT_PROCESSED = new VideoError("003", "Vídeo não processado", StatusCode.BAD_REQUEST);
-
+    public static final VideoStudioError VIDEO_INVALID = new VideoError("001", "Formato de arquivo inválido", StatusCode.BAD_REQUEST);
 
     private static final String APP_PREFIX = "VD";
 

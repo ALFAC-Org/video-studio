@@ -1,6 +1,7 @@
 package br.com.alfac.videostudio.infra.gateways;
 
 import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioVideoGateway;
+import br.com.alfac.videostudio.core.domain.StatusVideo;
 import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.infra.mapper.VideoEntityMapper;
 import br.com.alfac.videostudio.infra.persistence.VideoEntity;
@@ -60,6 +61,14 @@ public class RepositorioVideoGatewayImpl implements RepositorioVideoGateway {
         VideoEntity videoCadastrado = videoEntityRepository.save(videoEntity);
 
         return VideoEntityMapper.INSTANCE.toDomain(videoCadastrado);
+    }
+
+    @Override
+    public void atualizarStatus(Long id, StatusVideo statusVideo) {
+        this.videoEntityRepository.findById(id).ifPresent(videoEntity -> {
+            videoEntity.setStatus(statusVideo);
+            this.videoEntityRepository.save(videoEntity);
+        });
     }
 
     protected Optional<Video> montarVideo(Optional<VideoEntity> videoEntityOpt) {
