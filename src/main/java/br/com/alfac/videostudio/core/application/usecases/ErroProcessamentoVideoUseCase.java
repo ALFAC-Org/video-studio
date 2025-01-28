@@ -22,7 +22,7 @@ public class ErroProcessamentoVideoUseCase {
     private final SnsClient snsClient;
     private final String queueNotificacaoErroProcessamento;
 
-    @Value("${cloud.aws.sns.topic.arn}")
+    @Value("${cloud.aws.sns.topic.arn.envia.email}")
     private String topicArn;
 
     public ErroProcessamentoVideoUseCase(final RepositorioVideoGateway videoRepository, SnsClient snsClient, String queueNotificacaoErroProcessamento) {
