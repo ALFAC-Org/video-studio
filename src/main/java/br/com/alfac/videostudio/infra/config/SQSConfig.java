@@ -38,15 +38,16 @@ public class SQSConfig {
     }
 
     // TODO: Implementar o método configureSqsListeners
-//    @Bean
-//    public SqsListenerConfigurer sqsListenerConfigurer(ErrorHandler errorHandler) {
-//        return new SqsListenerConfigurer() {
-//            @Override
-//            public void configureSqsListeners(SqsListenerEndpointRegistrar registrar) {
-//                registrar.setErrorHandler(errorHandler);
-//            }
-//        };
-//    }
+    // @Bean
+    // public SqsListenerConfigurer sqsListenerConfigurer(ErrorHandler errorHandler)
+    // {
+    // return new SqsListenerConfigurer() {
+    // @Override
+    // public void configureSqsListeners(SqsListenerEndpointRegistrar registrar) {
+    // registrar.setErrorHandler(errorHandler);
+    // }
+    // };
+    // }
 
     @Bean
     public SqsClient sqsClient() {
@@ -54,7 +55,8 @@ public class SQSConfig {
                 .region(Region.of(awsRegion))
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create(accessKey, secretKey)))
-                .endpointOverride(URI.create(sqsEndpoint))  // Use apenas se estiver configurando endpoint personalizado
+                // .endpointOverride(URI.create(sqsEndpoint)) // Use apenas se estiver
+                // configurando endpoint personalizado
                 .build();
     }
 
@@ -62,8 +64,9 @@ public class SQSConfig {
     @Primary
     public SqsAsyncClient sqsAsyncClient() {
         return SqsAsyncClient.builder()
-                .endpointOverride(URI.create(sqsEndpoint))
-                .region(Region.US_EAST_1)
+                .region(Region.of(awsRegion))
+                // .endpointOverride(URI.create(sqsEndpoint))
+                // .region(Region.US_EAST_1)
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create(accessKey, secretKey)))
                 .build();
