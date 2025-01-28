@@ -18,8 +18,7 @@ public class ControladorVideoProcessado {
     public void processar(UUID videoName, String status) {
 
         switch (status) {
-            case "PROCESSADO":
-            case "PROCESSANDO":
+            case "PROCESSADO", "PROCESSANDO":
                 atualizarStatusVideoUseCase.execute(videoName, status);
                 break;
             case "ERRO":
@@ -27,6 +26,5 @@ public class ControladorVideoProcessado {
                 break;
         }
 
-    };
-
+    }
 }

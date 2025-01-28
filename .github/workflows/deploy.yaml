@@ -32,6 +32,13 @@ jobs:
           DB_HOST=$(aws rds describe-db-instances --db-instance-identifier ${{ secrets.DB_IDENTIFIER }} --query "DBInstances[0].Endpoint.Address" --output text)
           echo "::set-output name=db_host::$DB_HOST"
 
+      - name: Get SNS Topic ARN
+        id: get-sns-topic-arn
+        continue-on-error: true # if the DB is not set, we skip the remaining steps
+        run: |
+          SNS_TOPIC_ARN=$(aws sns list-topics --query "Topics[?ends_with(TopicArn, ':envia_email_erro_processamento')].TopicArn | [0]" --output text)
+          echo "::set-output name=sns_topic_arn::$SNS_TOPIC_ARN"
+
   build-docker-image:
     name: Build and push Docker image
     runs-on: ubuntu-latest
