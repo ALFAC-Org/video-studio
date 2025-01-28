@@ -82,6 +82,13 @@ jobs:
           SNS_TOPIC_ARN=$(aws sns list-topics --query "Topics[?ends_with(TopicArn, ':envia_email_erro_processamento')].TopicArn | [0]" --output text)
           echo "SNS_TOPIC_ARN_ENVIA_EMAIL=$SNS_TOPIC_ARN" >> $GITHUB_ENV
 
+      - name: Get SQS Queue URL
+        continue-on-error: true # if the SQS queue is not set, we skip
+        run: |
+          SQS_QUEUE_URL_FULL=$(aws sqs get-queue-url --queue-name videos_to_process --query "QueueUrl" --output text)
+          SQS_QUEUE_URL=$(echo $SQS_QUEUE_URL_FULL | sed 's/\/[^/]*$//')
+          echo "SQS_QUEUE_URL=$SQS_QUEUE_URL" >> $GITHUB_ENV
+
       - name: Overwrite Kubernetes Secrets
         run: |
           kubectl create secret generic secret-video-studio \
@@ -91,6 +98,7 @@ jobs:
             --from-literal=SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
             --from-literal=SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
             --from-literal=SNS_TOPIC_ARN_ENVIA_EMAIL=${{ env.SNS_TOPIC_ARN_ENVIA_EMAIL }} \
+            --from-literal=AWS_SQS_ENDPOINT=${{ env.SQS_QUEUE_URL }} \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Kube Apply
