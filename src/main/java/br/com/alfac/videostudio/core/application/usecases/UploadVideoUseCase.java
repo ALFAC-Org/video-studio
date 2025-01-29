@@ -46,7 +46,7 @@ public class UploadVideoUseCase {
         String fileName = videoCadastrado.getUuid().toString();
 
         //Copia o video para bucket
-        bucketGateway.uploadFile(fileName, file, bucketName);
+        bucketGateway.uploadFile("videos/" + fileName, file, bucketName);
 
         //Cria objeto de mensagem para a fila
         VideoProcessarDTO videoProcessarDTO = new VideoProcessarDTO();

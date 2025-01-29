@@ -30,7 +30,7 @@ public class DownloadVideoUseCase {
             throw new VideoStudioException(VideoError.VIDEO_NOT_PROCESSED);
         }
 
-        return bucketGateway.generatePresignedUrl(video.getUuid().toString(), bucketName)
+        return bucketGateway.generatePresignedUrl("zip/" + video.getUuid().toString(), bucketName)
                 .orElseThrow(() -> new VideoStudioException(VideoError.VIDEO_NOT_FOUND));
 
     }

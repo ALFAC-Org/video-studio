@@ -26,16 +26,16 @@ public class S3Config {
     @Value("${cloud.aws.region.static}")
     private String awsRegion;
 
-    @Value("${cloud.aws.s3.endpoint}")
-    private String s3Endpoint;
+    //@Value("${cloud.aws.s3.endpoint}")
+    //private String s3Endpoint;
 
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
                 .region(Region.of(awsRegion))
                 .credentialsProvider(getCredentialsProvider())
-                .endpointOverride(URI.create(s3Endpoint))
-                .serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())
+                //.endpointOverride(URI.create(s3Endpoint))
+                //.serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())
                 .build();
     }
 
@@ -56,7 +56,7 @@ public class S3Config {
     @Bean
     public S3Presigner s3Presigner(S3Client s3Client) {
         return S3Presigner.builder()
-                .endpointOverride(s3Client.serviceClientConfiguration().endpointOverride().get())
+                //.endpointOverride(s3Client.serviceClientConfiguration().endpointOverride().get())
                 .region(s3Client.serviceClientConfiguration().region())
                 .credentialsProvider(getCredentialsProvider())
                 .build();
