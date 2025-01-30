@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.util.ErrorHandler;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
@@ -25,6 +26,9 @@ public class SQSConfig {
 
     @Value("${aws.secretKey}")
     private String secretKey;
+
+    @Value("${aws.sessionToken}")
+    private String sessionToken;
 
     @Value("${cloud.aws.region.static}")
     private String awsRegion;
@@ -53,8 +57,7 @@ public class SQSConfig {
     public SqsClient sqsClient() {
         return SqsClient.builder()
                 .region(Region.of(awsRegion))
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(accessKey, secretKey)))
+                .credentialsProvider(getCredentialsProvider())
                 // .endpointOverride(URI.create(sqsEndpoint)) // Use apenas se estiver
                 // configurando endpoint personalizado
                 .build();
@@ -67,8 +70,12 @@ public class SQSConfig {
                 .region(Region.of(awsRegion))
                 // .endpointOverride(URI.create(sqsEndpoint))
                 // .region(Region.US_EAST_1)
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(accessKey, secretKey)))
+                .credentialsProvider(getCredentialsProvider())
                 .build();
+    }
+
+    private StaticCredentialsProvider getCredentialsProvider() {
+        return StaticCredentialsProvider.create(
+                AwsSessionCredentials.create(accessKey, secretKey, sessionToken));
     }
 }
