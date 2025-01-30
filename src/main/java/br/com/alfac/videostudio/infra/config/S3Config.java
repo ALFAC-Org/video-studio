@@ -23,6 +23,9 @@ public class S3Config {
     @Value("${aws.secretKey}")
     private String secretKey;
 
+    @Value("${aws.sessionToken}")
+    private Strin sessionToken;
+
     @Value("${cloud.aws.region.static}")
     private String awsRegion;
 
@@ -64,6 +67,6 @@ public class S3Config {
 
     private StaticCredentialsProvider getCredentialsProvider() {
         return StaticCredentialsProvider.create(
-                AwsBasicCredentials.create(accessKey, secretKey));
+                AwsBasicCredentials.create(accessKey, secretKey, sessionToken));
     }
 }
