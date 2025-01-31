@@ -25,14 +25,14 @@ public class ErroProcessamentoVideoUseCase {
     private final SnsClient snsClient;
     private final String queueNotificacaoErroProcessamento;
 
-    @Value("${cloud.aws.sns.topic.arn.envia.email}")
-    private String topicArn;
+    private final String topicArn;
 
     public ErroProcessamentoVideoUseCase(final RepositorioVideoGateway videoRepository, SnsClient snsClient,
-            String queueNotificacaoErroProcessamento) {
+            String queueNotificacaoErroProcessamento, String topicArn) {
         this.videoRepository = videoRepository;
         this.snsClient = snsClient;
         this.queueNotificacaoErroProcessamento = queueNotificacaoErroProcessamento;
+        this.topicArn = topicArn;
     }
 
     public void execute(UUID uuid) {
@@ -53,7 +53,7 @@ public class ErroProcessamentoVideoUseCase {
                         .stringValue(videoCadastrado.get().getUuid().toString()).build());
 
                 logger.info("[ErroProcessamentoVideoUseCase] topicArn: {}", topicArn);
-                        
+
                 PublishRequest request = PublishRequest.builder()
                         .topicArn(topicArn)
                         .messageAttributes(messageAttributes)// Use o ARN aqui
