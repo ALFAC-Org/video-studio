@@ -15,9 +15,12 @@ import java.util.UUID;
 
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ErroProcessamentoVideoUseCase {
 
+    private static final Logger logger = LoggerFactory.getLogger(ErroProcessamentoVideoUseCase.class);
     private final RepositorioVideoGateway videoRepository;
     private final SnsClient snsClient;
     private final String queueNotificacaoErroProcessamento;
@@ -32,10 +35,12 @@ public class ErroProcessamentoVideoUseCase {
     }
 
     public void execute(UUID uuid) {
+        logger.info("[ErroProcessamentoVideoUseCase] Executing error processing for video with UUID: {}", uuid);
 
         Optional<Video> videoCadastrado = videoRepository.consultarVideoPorUuId(uuid);
 
         if (videoCadastrado.isPresent()) {
+            logger.info("[ErroProcessamentoVideoUseCase] Video found with UUID: {}", uuid);
             Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
             messageAttributes.put("email", MessageAttributeValue.builder()
                     .dataType("String")
@@ -52,11 +57,14 @@ public class ErroProcessamentoVideoUseCase {
                     .build();
 
             snsClient.publish(request);
+            logger.info("[ErroProcessamentoVideoUseCase] Error notification sent for video with UUID: {}", uuid);
+
             Video video = videoCadastrado.get();
             videoRepository.atualizarStatus(video.getId(), StatusVideo.ERRO);
+            logger.info("[ErroProcessamentoVideoUseCase] Video status updated to ERRO for video with UUID: {}", uuid);
+        } else {
+            logger.warn("[ErroProcessamentoVideoUseCase] No video found with UUID: {}", uuid);
         }
-
-
     }
 
 }
