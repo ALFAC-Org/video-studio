@@ -15,48 +15,63 @@ import java.util.UUID;
 
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ErroProcessamentoVideoUseCase {
 
+    private static final Logger logger = LoggerFactory.getLogger(ErroProcessamentoVideoUseCase.class);
     private final RepositorioVideoGateway videoRepository;
     private final SnsClient snsClient;
     private final String queueNotificacaoErroProcessamento;
 
-    @Value("${cloud.aws.sns.topic.arn.envia.email}")
-    private String topicArn;
+    private final String topicArn;
 
-    public ErroProcessamentoVideoUseCase(final RepositorioVideoGateway videoRepository, SnsClient snsClient, String queueNotificacaoErroProcessamento) {
+    public ErroProcessamentoVideoUseCase(final RepositorioVideoGateway videoRepository, SnsClient snsClient,
+            String queueNotificacaoErroProcessamento, String topicArn) {
         this.videoRepository = videoRepository;
         this.snsClient = snsClient;
         this.queueNotificacaoErroProcessamento = queueNotificacaoErroProcessamento;
+        this.topicArn = topicArn;
     }
 
     public void execute(UUID uuid) {
+        logger.info("[ErroProcessamentoVideoUseCase] Executing error processing for video with UUID: {}", uuid);
 
         Optional<Video> videoCadastrado = videoRepository.consultarVideoPorUuId(uuid);
 
         if (videoCadastrado.isPresent()) {
-            Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
-            messageAttributes.put("email", MessageAttributeValue.builder()
-                    .dataType("String")
-                    .stringValue("teste@teste.com").build());
+            try {
+                logger.info("[ErroProcessamentoVideoUseCase] Video found with UUID: {}", uuid);
+                Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
+                messageAttributes.put("email", MessageAttributeValue.builder()
+                        .dataType("String")
+                        .stringValue("teste@teste.com").build());
 
-            messageAttributes.put("video_name", MessageAttributeValue.builder()
-                    .dataType("String")
-                    .stringValue(videoCadastrado.get().getUuid().toString()).build());
+                messageAttributes.put("video_name", MessageAttributeValue.builder()
+                        .dataType("String")
+                        .stringValue(videoCadastrado.get().getUuid().toString()).build());
 
+                PublishRequest request = PublishRequest.builder()
+                        .topicArn(topicArn)
+                        .message("Erro no processamento do vídeo com UUID: " + uuid) // Adicione a mensagem aqui
+                        .messageAttributes(messageAttributes)// Use o ARN aqui
+                        .build();
 
-            PublishRequest request = PublishRequest.builder()
-                    .topicArn(topicArn)
-                    .messageAttributes(messageAttributes)// Use o ARN aqui
-                    .build();
+                snsClient.publish(request);
+                logger.info("[ErroProcessamentoVideoUseCase] Error notification sent for video with UUID: {}", uuid);
 
-            snsClient.publish(request);
-            Video video = videoCadastrado.get();
-            videoRepository.atualizarStatus(video.getId(), StatusVideo.ERRO);
+                Video video = videoCadastrado.get();
+                videoRepository.atualizarStatus(video.getId(), StatusVideo.ERRO);
+                logger.info("[ErroProcessamentoVideoUseCase] Video status updated to ERRO for video with UUID: {}",
+                        uuid);
+            } catch (Exception e) {
+                logger.error("[ErroProcessamentoVideoUseCase] Error processing video with UUID: {}", uuid, e);
+            }
+
+        } else {
+            logger.warn("[ErroProcessamentoVideoUseCase] No video found with UUID: {}", uuid);
         }
-
-
     }
 
 }
