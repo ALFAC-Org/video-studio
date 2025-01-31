@@ -52,6 +52,8 @@ public class ErroProcessamentoVideoUseCase {
                         .dataType("String")
                         .stringValue(videoCadastrado.get().getUuid().toString()).build());
 
+                logger.info("[ErroProcessamentoVideoUseCase] topicArn: {}", topicArn);
+                        
                 PublishRequest request = PublishRequest.builder()
                         .topicArn(topicArn)
                         .messageAttributes(messageAttributes)// Use o ARN aqui

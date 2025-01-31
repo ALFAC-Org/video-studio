@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.awspring.cloud.sns.core.SnsTemplate;
 // import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -38,8 +39,8 @@ public class SnsConfig {
                 AwsSessionCredentials.create(accessKey, secretKey, sessionToken));
     }
 
-//    @Bean
-//    public SnsTemplate snsTemplate(SnsClient snsClient) {
-//        return new SnsTemplate(snsClient);
-//    }
+   @Bean
+   public SnsTemplate snsTemplate(SnsClient snsClient) {
+       return new SnsTemplate(snsClient);
+   }
 }
