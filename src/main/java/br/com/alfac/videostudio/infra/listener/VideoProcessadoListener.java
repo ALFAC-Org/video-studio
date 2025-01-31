@@ -16,7 +16,7 @@ public class VideoProcessadoListener {
         this.controladorVideoProcessado = controladorVideoProcessado;
     }
 
-    // @SqsListener(value = "update_processing_status")
+    @SqsListener(value = "update_processing_status")
     public void receiveMessage(String message) {
         try {
             System.out.println("Mensagem recebida: " + message);

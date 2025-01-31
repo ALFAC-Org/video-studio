@@ -34,16 +34,16 @@ public class UploadVideoUseCase {
 
     public Video execute(Long usuarioId, VideoDTO videoDTO, byte[] file) throws VideoStudioException {
 
-        if(FileValidator.isMp4File(file) == false){
-            throw new VideoStudioException(VideoError.VIDEO_INVALID);
-        }
+        // if(FileValidator.isMp4File(file) == false){
+        //     throw new VideoStudioException(VideoError.VIDEO_INVALID);
+        // }
 
         Video video = new Video(usuarioId, videoDTO.getNome());
 
         Video videoCadastrado = videoRepository.registrarUploadVideo(video);
 
         //Define o nome do arquivo
-        String fileName = videoCadastrado.getUuid().toString();
+        String fileName = videoCadastrado.getUuid().toString().concat(".mp4");
 
         //Copia o video para bucket
         bucketGateway.uploadFile("videos/" + fileName, file, bucketName);
