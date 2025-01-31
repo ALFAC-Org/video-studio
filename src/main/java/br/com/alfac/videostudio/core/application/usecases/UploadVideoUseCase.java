@@ -1,5 +1,7 @@
 package br.com.alfac.videostudio.core.application.usecases;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.gson.Gson;
 
 import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
@@ -32,6 +34,7 @@ public class UploadVideoUseCase {
         this.queueName = queueName;
     }
 
+    @Transactional
     public Video execute(Long usuarioId, VideoDTO videoDTO, byte[] file) throws VideoStudioException {
 
         // if(FileValidator.isMp4File(file) == false){
