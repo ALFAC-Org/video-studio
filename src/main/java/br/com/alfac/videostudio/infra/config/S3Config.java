@@ -25,7 +25,7 @@ public class S3Config {
     @Value("${aws.secretKey}")
     private String secretKey;
 
-    @Value("${aws.sessionToken:}")
+    @Value("${aws.sessionToken}")
     private String sessionToken;
 
     @Value("${cloud.aws.region.static}")
