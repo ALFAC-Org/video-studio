@@ -53,6 +53,7 @@ public class UploadVideoUseCase {
     }
 
     private void sendMessageToQueue(String message) {
+        System.out.println("|| Enviando mensagem para a fila: " + queueName);
         queueGateway.sendMessage(queueName, message);
     }
 
@@ -75,7 +76,11 @@ public class UploadVideoUseCase {
 
         // Envia mensagem para a fila para notificar que vídeo está disponível para
         // processamento
-        sendMessageToQueue(new Gson().toJson(videoProcessarDTO));
+        String data = new Gson().toJson(videoProcessarDTO);
+
+        System.out.println("|| Enviando mensagem para a fila: " + data);
+
+        sendMessageToQueue(data);
 
         return videoCadastrado;
     }

@@ -1,8 +1,11 @@
 name: Security Check
 
 on:
-  push:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Unit Tests"]
+    types:
+      - completed
 
 jobs:
   dependency-check:
