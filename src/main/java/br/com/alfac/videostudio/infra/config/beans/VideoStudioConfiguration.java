@@ -5,6 +5,7 @@ import br.com.alfac.videostudio.core.application.adapters.controller.Controlador
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideoProcessado;
 import br.com.alfac.videostudio.core.application.adapters.gateways.BucketGateway;
 import br.com.alfac.videostudio.core.application.adapters.gateways.QueueGateway;
+import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioUsuarioGateway;
 import br.com.alfac.videostudio.core.application.usecases.*;
 import br.com.alfac.videostudio.infra.gateways.RepositorioUsuarioGatewayImpl;
 import br.com.alfac.videostudio.infra.gateways.RepositorioVideoGatewayImpl;
@@ -61,13 +62,10 @@ public class VideoStudioConfiguration {
     }
 
     @Bean
-    public ControladorVideoProcessado controladorVideoProcessado(
-
-            final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final SnsClient snsClient) {
+    public ControladorVideoProcessado controladorVideoProcessado(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final SnsClient snsClient, final RepositorioUsuarioGateway usuarioGateway) {
         AtualizarStatusVideoUseCase atualizarStatusVideoUseCase = new AtualizarStatusVideoUseCase(
                 repositorioVideoGatewayImpl);
-        ErroProcessamentoVideoUseCase erroProcessamentoVideoUseCase = new ErroProcessamentoVideoUseCase(
-                repositorioVideoGatewayImpl, snsClient, queueNotificacaoErroProcessamento, topicArn);
+        ErroProcessamentoVideoUseCase erroProcessamentoVideoUseCase = new ErroProcessamentoVideoUseCase(repositorioVideoGatewayImpl, snsClient, queueNotificacaoErroProcessamento, topicArn, usuarioGateway);
         return new ControladorVideoProcessado(atualizarStatusVideoUseCase, erroProcessamentoVideoUseCase);
     }
 

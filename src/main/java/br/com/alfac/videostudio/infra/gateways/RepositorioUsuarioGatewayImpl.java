@@ -41,6 +41,15 @@ public class RepositorioUsuarioGatewayImpl implements RepositorioUsuarioGateway 
         return UsuarioEntityMapper.INSTANCE.toDomain(usuarioCadastrado);
     }
 
+    @Override
+    public Optional<Usuario> consultarPorId(Long usuarioID) {
+
+
+        Optional<UsuarioEntity> usuarioEntity = usuarioEntityRepository.findById(usuarioID);
+
+        return montarUsuario(usuarioEntity);
+    }
+
     protected Optional<Usuario> montarUsuario(Optional<UsuarioEntity> videoEntityOpt) {
         Optional<Usuario> usuarioOpt = Optional.empty();
 
