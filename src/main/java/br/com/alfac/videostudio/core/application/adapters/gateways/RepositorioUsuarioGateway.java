@@ -10,5 +10,6 @@ public interface RepositorioUsuarioGateway {
     boolean emailJaCadastrado(String email);
 
     Usuario cadastrarUsuario(Usuario usuario);
+    Optional<Usuario> consultarPorId(Long usuarioID);
 
 }

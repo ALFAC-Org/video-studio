@@ -1,0 +1,35 @@
+version: '3'
+services:
+
+  localstack:
+    image: localstack/localstack
+    hostname: localstack
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=s3,sqs,sns
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - './setup.sh:/etc/localstack/init/ready.d/init-aws.sh'
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: videodbpass
+      MYSQL_PASSWORD: videodbpass
+      MYSQL_DATABASE: videodb
+      MYSQL_USER: videodbuser
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+
+networks: 
+  backend:
+    driver: 'bridge'

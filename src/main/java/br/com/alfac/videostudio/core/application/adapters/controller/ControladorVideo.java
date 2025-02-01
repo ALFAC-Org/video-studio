@@ -19,7 +19,7 @@ public class ControladorVideo {
     private final DownloadVideoUseCase downloadVideoUseCase;
 
     public ControladorVideo(final ListarVideosUseCase listarVideosUseCase,
-                            final UploadVideoUseCase uploadVideoUseCase, DownloadVideoUseCase downloadVideoUseCase) {
+            final UploadVideoUseCase uploadVideoUseCase, DownloadVideoUseCase downloadVideoUseCase) {
         this.listarVideosUseCase = listarVideosUseCase;
         this.uploadVideoUseCase = uploadVideoUseCase;
         this.downloadVideoUseCase = downloadVideoUseCase;

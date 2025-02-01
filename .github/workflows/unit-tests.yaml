@@ -20,4 +20,3 @@ jobs:
       coverage_results_path: "target/site/jacoco/jacoco.xml"
       jacoco_csv_file: "target/site/jacoco/jacoco.csv"
       test_command: "mvn test -P unit-tests"
-      
