@@ -20,57 +20,64 @@ import software.amazon.awssdk.services.sns.SnsClient;
 @Configuration
 public class VideoStudioConfiguration {
 
-    @Value("${s3.queue-video-to-process}")
-    private String queueVideoParaProcessar;
+        @Value("${s3.queue-video-to-process}")
+        private String queueVideoParaProcessar;
 
-    @Value("${s3.queue-notification-error-processing}")
-    private String queueNotificacaoErroProcessamento;
+        @Value("${s3.queue-notification-error-processing}")
+        private String queueNotificacaoErroProcessamento;
 
-    @Value("${s3.bucket-video-to-process}")
-    private String bucketVideoParaProcessar;
+        @Value("${s3.bucket-video-to-process}")
+        private String bucketVideoParaProcessar;
 
-    @Value("${s3.bucket-file-processed}")
-    private String bucketArquivoProcessado;
+        @Value("${s3.bucket-file-processed}")
+        private String bucketArquivoProcessado;
 
-    @Value("${cloud.aws.sns.topic.arn.envia.email}")
-    private String topicArn;
+        @Value("${cloud.aws.sns.topic.arn.envia.email}")
+        private String topicArn;
 
-    @Bean
-    public ControladorVideo controladorVideo(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl,
-            final BucketGateway bucketGateway, final QueueGateway queueGateway) {
-        ListarVideosUseCase listarVideosUseCase = new ListarVideosUseCase(repositorioVideoGatewayImpl);
-        UploadVideoUseCase uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway,
-                bucketVideoParaProcessar, queueGateway, queueVideoParaProcessar);
-        DownloadVideoUseCase downloadVideoUseCase = new DownloadVideoUseCase(repositorioVideoGatewayImpl, bucketGateway,
-                bucketArquivoProcessado);
-        return new ControladorVideo(listarVideosUseCase, uploadVideoUseCase, downloadVideoUseCase);
-    }
+        @Bean
+        public ControladorVideo controladorVideo(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl,
+                        final BucketGateway bucketGateway, final QueueGateway queueGateway) {
+                ListarVideosUseCase listarVideosUseCase = new ListarVideosUseCase(repositorioVideoGatewayImpl);
+                UploadVideoUseCase uploadVideoUseCase = new UploadVideoUseCase(repositorioVideoGatewayImpl,
+                                bucketGateway,
+                                bucketVideoParaProcessar, queueGateway, queueVideoParaProcessar);
+                DownloadVideoUseCase downloadVideoUseCase = new DownloadVideoUseCase(repositorioVideoGatewayImpl,
+                                bucketGateway,
+                                bucketArquivoProcessado);
+                return new ControladorVideo(listarVideosUseCase, uploadVideoUseCase, downloadVideoUseCase);
+        }
 
-    @Bean
-    public ControladorUsuario controladorUsuario(final RepositorioUsuarioGatewayImpl repositorioUsuarioGatewayImpl,
-            PasswordEncoder passwordEncoder) {
-        CadastrarUsuarioUseCase cadastrarUsuarioUseCase = new CadastrarUsuarioUseCase(repositorioUsuarioGatewayImpl,
-                passwordEncoder);
+        @Bean
+        public ControladorUsuario controladorUsuario(final RepositorioUsuarioGatewayImpl repositorioUsuarioGatewayImpl,
+                        PasswordEncoder passwordEncoder) {
+                CadastrarUsuarioUseCase cadastrarUsuarioUseCase = new CadastrarUsuarioUseCase(
+                                repositorioUsuarioGatewayImpl,
+                                passwordEncoder);
 
-        return new ControladorUsuario(cadastrarUsuarioUseCase);
-    }
+                return new ControladorUsuario(cadastrarUsuarioUseCase);
+        }
 
-    @Bean
-    public ObterUsuarioPorUsernameUseCase obterUsuarioPorUsername(
-            final RepositorioUsuarioGatewayImpl repositorioUsuarioGatewayImpl) {
-        return new ObterUsuarioPorUsernameUseCase(repositorioUsuarioGatewayImpl);
-    }
+        @Bean
+        public ObterUsuarioPorUsernameUseCase obterUsuarioPorUsername(
+                        final RepositorioUsuarioGatewayImpl repositorioUsuarioGatewayImpl) {
+                return new ObterUsuarioPorUsernameUseCase(repositorioUsuarioGatewayImpl);
+        }
 
-    @Bean
-    public ControladorVideoProcessado controladorVideoProcessado(final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final SnsClient snsClient, final RepositorioUsuarioGateway usuarioGateway) {
-        AtualizarStatusVideoUseCase atualizarStatusVideoUseCase = new AtualizarStatusVideoUseCase(
-                repositorioVideoGatewayImpl);
-        ErroProcessamentoVideoUseCase erroProcessamentoVideoUseCase = new ErroProcessamentoVideoUseCase(repositorioVideoGatewayImpl, snsClient, queueNotificacaoErroProcessamento, topicArn, usuarioGateway);
-        return new ControladorVideoProcessado(atualizarStatusVideoUseCase, erroProcessamentoVideoUseCase);
-    }
+        @Bean
+        public ControladorVideoProcessado controladorVideoProcessado(
+                        final RepositorioVideoGatewayImpl repositorioVideoGatewayImpl, final SnsClient snsClient,
+                        final RepositorioUsuarioGateway usuarioGateway) {
+                AtualizarStatusVideoUseCase atualizarStatusVideoUseCase = new AtualizarStatusVideoUseCase(
+                                repositorioVideoGatewayImpl);
+                ErroProcessamentoVideoUseCase erroProcessamentoVideoUseCase = new ErroProcessamentoVideoUseCase(
+                                repositorioVideoGatewayImpl, snsClient, queueNotificacaoErroProcessamento, topicArn,
+                                usuarioGateway);
+                return new ControladorVideoProcessado(atualizarStatusVideoUseCase, erroProcessamentoVideoUseCase);
+        }
 
-    @Bean
-    public JwtTokenProvider jwtTokenProvider() {
-        return new JwtTokenProvider();
-    }
+        @Bean
+        public JwtTokenProvider jwtTokenProvider() {
+                return new JwtTokenProvider();
+        }
 }

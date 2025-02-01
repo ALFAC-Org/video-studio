@@ -10,53 +10,72 @@ import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioVi
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
 import br.com.alfac.videostudio.core.application.dto.VideoProcessarDTO;
 import br.com.alfac.videostudio.core.application.util.FileValidator;
+// import br.com.alfac.videostudio.core.application.util.FileValidator;
 import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.core.exception.VideoStudioException;
+// import br.com.alfac.videostudio.core.exception.video.VideoError;
 import br.com.alfac.videostudio.core.exception.video.VideoError;
 
 public class UploadVideoUseCase {
 
     private final RepositorioVideoGateway videoRepository;
 
-    private final QueueGateway queueGateway;
-
-    private final String queueName;
-
     private final BucketGateway bucketGateway;
 
     private final String bucketName;
 
-    public UploadVideoUseCase(final RepositorioVideoGateway videoRepository, final BucketGateway bucketGateway, final String bucketName, final QueueGateway queueGateway, final String queueName) {
+    private final QueueGateway queueGateway;
+
+    private final String queueName;
+
+    private final FileValidator fileValidator;
+
+    public UploadVideoUseCase(final RepositorioVideoGateway videoRepository, final BucketGateway bucketGateway,
+            final String bucketName, final QueueGateway queueGateway, final String queueName) {
         this.videoRepository = videoRepository;
         this.bucketGateway = bucketGateway;
         this.bucketName = bucketName;
         this.queueGateway = queueGateway;
         this.queueName = queueName;
+        this.fileValidator = new FileValidator();
     }
 
-    @Transactional
-    public Video execute(Long usuarioId, VideoDTO videoDTO, byte[] file) throws VideoStudioException {
-
-        // if(FileValidator.isMp4File(file) == false){
-        //     throw new VideoStudioException(VideoError.VIDEO_INVALID);
-        // }
-
+    private Video getVideoCadastrado(Long usuarioId, VideoDTO videoDTO) {
         Video video = new Video(usuarioId, videoDTO.getNome());
 
         Video videoCadastrado = videoRepository.registrarUploadVideo(video);
 
-        //Define o nome do arquivo
+        return videoCadastrado;
+    }
+
+    private void sendVideoToBucket(String fileName, byte[] file) {
+        bucketGateway.uploadFile("videos/" + fileName, file, bucketName);
+    }
+
+    private void sendMessageToQueue(String message) {
+        queueGateway.sendMessage(queueName, message);
+    }
+
+    @Transactional
+    public Video execute(Long usuarioId, VideoDTO videoDTO, byte[] file) throws VideoStudioException {
+        if (!fileValidator.isMp4File(file)) {
+            throw new VideoStudioException(VideoError.VIDEO_INVALID);
+        }
+
+        Video videoCadastrado = getVideoCadastrado(usuarioId, videoDTO);
+
+        // Define o nome do arquivo
         String fileName = videoCadastrado.getUuid().toString().concat(".mp4");
 
-        //Copia o video para bucket
-        bucketGateway.uploadFile("videos/" + fileName, file, bucketName);
+        sendVideoToBucket(fileName, file);
 
-        //Cria objeto de mensagem para a fila
+        // Cria objeto de mensagem para a fila
         VideoProcessarDTO videoProcessarDTO = new VideoProcessarDTO();
         videoProcessarDTO.setVideoName(fileName);
 
-        //Envia mensagem para a fila para notificar que vídeo está disponível para processamento
-        queueGateway.sendMessage(queueName, new Gson().toJson(videoProcessarDTO));
+        // Envia mensagem para a fila para notificar que vídeo está disponível para
+        // processamento
+        sendMessageToQueue(new Gson().toJson(videoProcessarDTO));
 
         return videoCadastrado;
     }

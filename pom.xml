@@ -203,6 +203,13 @@
             <artifactId>spring-cloud-aws-starter-sns</artifactId>
         </dependency>
 
+        <!-- Testes unitários -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.0.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
@@ -299,6 +306,9 @@
 
         <profile>
             <id>unit-tests</id>
+            <properties>
+                <spring.profiles.active>test</spring.profiles.active>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -361,8 +371,11 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>default-test</id>
+                                <!-- <id>default-test</id> -->
                                 <configuration>
+                                    <includes>
+                                        <include>**/*Test.java</include>
+                                    </includes>
                                     <excludes>
                                         <exclude>**/bdd/**/*.java</exclude>
                                         <exclude>br/com/alfac/videostudio/core/utils/**</exclude>
