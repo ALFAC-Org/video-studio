@@ -1,20 +1,15 @@
 package br.com.alfac.videostudio.unit.core.adapters.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.mockito.Mockito.mockConstruction;
 
 import br.com.alfac.videostudio.core.application.adapters.controller.ControladorVideo;
-import br.com.alfac.videostudio.core.application.adapters.gateways.RepositorioVideoGateway;
 import br.com.alfac.videostudio.core.application.dto.VideoDTO;
 import br.com.alfac.videostudio.core.application.usecases.ListarVideosUseCase;
 import br.com.alfac.videostudio.core.application.usecases.UploadVideoUseCase;
-import br.com.alfac.videostudio.core.domain.Video;
 import br.com.alfac.videostudio.core.exception.VideoStudioException;
 import br.com.alfac.videostudio.utils.VideoHelper;
 
