@@ -21,7 +21,7 @@ public class FileValidator {
         try {
             String detectedType = tika.detect(fileBytes); // Detecta o tipo do conteúdo
 
-            System.out.print("|| detectedType: " + detectedType);
+            // System.out.print("|| detectedType: " + detectedType);
 
             return isMp4MimeType(detectedType);
         } catch (Exception e) {
