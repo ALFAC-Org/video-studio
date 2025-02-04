@@ -6,9 +6,9 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 66.09%               |
-| :heavy_check_mark: Number of Lines Covered | 606    |
-| :x: Number of Lines Missed  | 311     |
+| Code Coverage %         | 66.3%               |
+| :heavy_check_mark: Number of Lines Covered | 608    |
+| :x: Number of Lines Missed  | 309     |
 | Total Number of Lines   | 917     |
 
 
@@ -1061,11 +1061,11 @@
 
 <details>
     <summary>
-:x: ObterUsuarioPorUsernameUseCase.java
+:heavy_check_mark: ObterUsuarioPorUsernameUseCase.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
