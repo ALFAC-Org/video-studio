@@ -1,6 +1,7 @@
 name: Unit Tests
 
 on:
+  workflow_dispatch: 
   push:
 
 # Descomente se precisar de uma nova branch para fazer alterações/testes
@@ -11,7 +12,7 @@ on:
 
 jobs:
   execute-unit-tests:
-    uses: ALFAC-Org/github-workflows/.github/workflows/coverage.yaml@main  
+    uses: ALFAC-Org/github-workflows/.github/workflows/coverage.yaml@main
     secrets: inherit
     permissions: write-all
     with:
@@ -20,3 +21,9 @@ jobs:
       coverage_results_path: "target/site/jacoco/jacoco.xml"
       jacoco_csv_file: "target/site/jacoco/jacoco.csv"
       test_command: "mvn test -P unit-tests"
+
+# Como testar localmente:
+# act -s GITHUB_TOKEN="$(gh auth token)" -j execute-unit-tests --container-architecture linux/amd64 -P ubuntu-latest=quay.io/jamezp/act-maven
+
+# Se der erro: 'Error: authentication required'
+# act -s GITHUB_TOKEN="$(gh auth token)" -s 'DOCKER_USERNAME=<username>' -s 'DOCKER_PASSWORD=<password>' -j execute-unit-tests --container-architecture linux/amd64 -P ubuntu-latest=quay.io/jamezp/act-maven
