@@ -3,7 +3,7 @@ name: Security Check
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [Unit Tests]
+    workflows: ["Unit Tests"]
     types:
       - completed
 
@@ -20,35 +20,20 @@ jobs:
       - name: Run OWASP Dependency-Check
         run: sh ./config/setup-security.sh ${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
 
-      - name: Success
-        if: ${{ success() }}
-        # set the merge commit status check
-        # using GitHub REST API
-        # see https://docs.github.com/en/rest/reference/repos#create-a-commit-status
-        run: |
-          curl --request POST \
-          --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --header 'content-type: application/json' \
-          --data '{
-            "context": "Dependency Check",
-            "state": "success",
-            "description": "Success",
-            "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          }'
-      - name: Fail
-        if: ${{ failure() }}
-        # set the merge commit status check
-        # using GitHub REST API
-        # see https://docs.github.com/en/rest/reference/repos#create-a-commit-status
-        run: |
-          curl --request POST \
-          --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --header 'content-type: application/json' \
-          --data '{
-            "context": "Dependency Check",
-            "state": "failure",
-            "description": "Failed",
-            "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          }'
+      - name: Update PR Status to Success
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { context } = require('@actions/github');
+            const { owner, repo } = context.repo;
+            const sha = context.sha;
+            await github.repos.createCommitStatus({
+              owner,
+              repo,
+              sha,
+              state: 'success',
+              context: 'Dependency Check',
+              description: 'Success',
+              target_url: `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            });
