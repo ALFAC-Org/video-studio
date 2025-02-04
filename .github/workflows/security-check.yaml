@@ -21,18 +21,14 @@ jobs:
         run: sh ./config/setup-security.sh ${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
 
       - name: Update PR Status to Success
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const github = require('@actions/github');
-            const { context } = github;
-            const { owner, repo } = context.repo;
-            const sha = context.sha;
-            await github.repos.createCommitStatus({
-              owner,
-              repo,
-              sha,
+            octokit.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
               state: 'success',
               context: 'Dependency Check',
               description: 'Success',
