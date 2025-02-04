@@ -6,9 +6,9 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 61.4%               |
-| :heavy_check_mark: Number of Lines Covered | 563    |
-| :x: Number of Lines Missed  | 354     |
+| Code Coverage %         | 66.09%               |
+| :heavy_check_mark: Number of Lines Covered | 606    |
+| :x: Number of Lines Missed  | 311     |
 | Total Number of Lines   | 917     |
 
 
@@ -611,24 +611,12 @@
 
 <details>
     <summary>
-:x: UsuarioDTO.java
+:heavy_check_mark: UsuarioDTO.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #18
-```
-    }
-```
-- Line #26
-```
-    }
-```
-- Line #34
-```
-    }
-```
 </details>
 
     
@@ -877,11 +865,11 @@
 
 <details>
     <summary>
-:x: UsuarioPresenter.java
+:heavy_check_mark: UsuarioPresenter.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
@@ -1121,32 +1109,12 @@
 
 <details>
     <summary>
-:x: ErroProcessamentoVideoUseCase.java
+:heavy_check_mark: ErroProcessamentoVideoUseCase.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #67
-```
-                        .messageAttributes(messageAttributes)// Use o ARN aqui
-```
-- Line #77
-```
-            } catch (Exception e) {
-```
-- Line #79
-```
-            }
-```
-- Line #81
-```
-        } else {
-```
-- Line #84
-```
-    }
-```
 </details>
 
     
