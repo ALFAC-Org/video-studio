@@ -21,7 +21,7 @@ jobs:
       coverage_results_path: "target/site/jacoco/jacoco.xml"
       jacoco_csv_file: "target/site/jacoco/jacoco.csv"
       test_command: "mvn test -P unit-tests"
-      push_command: "false"
+      # push_command: "false"
 
 # Como testar localmente:
 # act -s GITHUB_TOKEN="$(gh auth token)" -j execute-unit-tests --container-architecture linux/amd64 -P ubuntu-latest=quay.io/jamezp/act-maven
