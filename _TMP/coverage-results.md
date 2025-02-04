@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 59.17%               |
-| :heavy_check_mark: Number of Lines Covered | 429    |
-| :x: Number of Lines Missed  | 296     |
-| Total Number of Lines   | 725     |
+| Code Coverage %         | 55.6%               |
+| :heavy_check_mark: Number of Lines Covered | 511    |
+| :x: Number of Lines Missed  | 408     |
+| Total Number of Lines   | 919     |
 
 
 ## Details:
@@ -80,6 +80,22 @@
 
 <details>
     <summary>
+:x: CustomErrorHandler.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #15
+```
+    }
+```
+</details>
+
+    
+
+<details>
+    <summary>
 :heavy_check_mark: ApiErrorItem.java
     </summary>
 
@@ -143,6 +159,10 @@
         
 #### Lines Missed:
         
+- Line #67
+```
+                file.getBytes());
+```
 </details>
 
     
@@ -198,72 +218,36 @@
 
 <details>
     <summary>
-:x: VideoRequest.java
+:heavy_check_mark: VideoRequest.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #16
-```
-    }
-```
-- Line #20
-```
-    }
-```
-- Line #28
-```
-    }
-```
-- Line #36
-```
-    }
-```
 </details>
 
     
 
 <details>
     <summary>
-:x: LoginRequest.java
+:heavy_check_mark: LoginRequest.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #24
-```
-    }
-```
-- Line #32
-```
-    }
-```
 </details>
 
     
 
 <details>
     <summary>
-:x: UsuarioRequest.java
+:heavy_check_mark: UsuarioRequest.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #29
-```
-    }
-```
-- Line #37
-```
-    }
-```
-- Line #45
-```
-    }
-```
 </details>
 
     
@@ -318,7 +302,15 @@
         
 #### Lines Missed:
         
-- Line #13
+- Line #27
+```
+        } catch (SqsException e) {
+```
+- Line #29
+```
+        }
+```
+- Line #31
 ```
     }
 ```
@@ -379,12 +371,28 @@
 
 <details>
     <summary>
-:heavy_check_mark: VideoEntity.java
+:x: VideoEntity.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
+- Line #86
+```
+    }
+```
+- Line #94
+```
+    }
+```
+- Line #100
+```
+    }
+```
+- Line #105
+```
+    }
+```
 </details>
 
     
@@ -421,6 +429,19 @@
 ```
     }
 ```
+</details>
+
+    
+### br/com/alfac/videostudio/infra/listener/dto
+
+<details>
+    <summary>
+:x: VideoProcessDTO.java
+    </summary>
+
+        
+#### Lines Missed:
+        
 </details>
 
     
@@ -481,6 +502,58 @@
 
 <details>
     <summary>
+:heavy_check_mark: AWSCredentialsConfig.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: SnsConfig.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #63
+```
+                    AwsSessionCredentials.create(accessKey, secretKey, sessionToken));
+```
+- Line #66
+```
+                    AwsBasicCredentials.create(accessKey, secretKey));
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: SQSConfig.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #108
+```
+                    AwsSessionCredentials.create(accessKey, secretKey, sessionToken));
+```
+- Line #111
+```
+                    AwsBasicCredentials.create(accessKey, secretKey));
+```
+</details>
+
+    
+
+<details>
+    <summary>
 :heavy_check_mark: SecurityConfig.java
     </summary>
 
@@ -511,9 +584,21 @@
         
 #### Lines Missed:
         
-- Line #53
+- Line #73
 ```
                 .build();
+```
+- Line #82
+```
+                .build();
+```
+- Line #94
+```
+                    AwsSessionCredentials.create(accessKey, secretKey, sessionToken));
+```
+- Line #97
+```
+                    AwsBasicCredentials.create(accessKey, secretKey));
 ```
 </details>
 
@@ -526,6 +611,23 @@
     </summary>
 
         
+</details>
+
+    
+### br/com/alfac/videostudio/core/application/util
+
+<details>
+    <summary>
+:x: FileValidator.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #27
+```
+        } catch (Exception e) {
+```
 </details>
 
     
@@ -569,6 +671,18 @@
 
 <details>
     <summary>
+:x: VideoProcessarDTO.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: DownloadDTO.java
     </summary>
 
@@ -603,27 +717,83 @@
 </details>
 
     
+
+<details>
+    <summary>
+:x: ControladorVideoProcessado.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #23
+```
+                break;
+```
+- Line #29
+```
+    }
+```
+</details>
+
+    
 ### br/com/alfac/videostudio/infra/gateways
 
 <details>
     <summary>
-:heavy_check_mark: RepositorioVideoGatewayImpl.java
+:x: RepositorioVideoGatewayImpl.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
+- Line #71
+```
+        });
+```
+- Line #72
+```
+    }
+```
 </details>
 
     
 
 <details>
     <summary>
-:heavy_check_mark: RepositorioUsuarioGatewayImpl.java
+:x: QueueGatewayImpl.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
+        
+- Line #24
+```
+                    .messageBody(message)
+```
+- Line #28
+```
+        } catch (SqsException e) {
+```
+- Line #30
+```
+        }
+```
+- Line #31
+```
+    }
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: RepositorioUsuarioGatewayImpl.java
+    </summary>
+
+        
+#### Lines Missed:
         
 </details>
 
@@ -689,6 +859,16 @@
 <details>
     <summary>
 :x: RepositorioUsuarioGateway.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: QueueGateway.java
     </summary>
 
         
@@ -965,12 +1145,60 @@
 
 <details>
     <summary>
+:x: ErroProcessamentoVideoUseCase.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #67
+```
+                        .messageAttributes(messageAttributes)// Use o ARN aqui
+```
+- Line #77
+```
+            } catch (Exception e) {
+```
+- Line #79
+```
+            }
+```
+- Line #81
+```
+        } else {
+```
+- Line #84
+```
+    }
+```
+</details>
+
+    
+
+<details>
+    <summary>
 :heavy_check_mark: ListarVideosUseCase.java
     </summary>
 
         
 #### All Lines Covered!
         
+</details>
+
+    
+
+<details>
+    <summary>
+:x: AtualizarStatusVideoUseCase.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #30
+```
+    }
+```
 </details>
 
     
