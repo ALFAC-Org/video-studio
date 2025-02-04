@@ -19,7 +19,7 @@ public class VideoProcessadoListener {
     @SqsListener(value = "update_processing_status")
     public void receiveMessage(String message) {
         try {
-            System.out.println("Mensagem recebida: " + message);
+            // System.out.println("Mensagem recebida: " + message);
 
             VideoProcessDTO videoProcessarDTO = new Gson().fromJson(message, VideoProcessDTO.class);
 

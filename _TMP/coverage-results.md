@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 55.6%               |
-| :heavy_check_mark: Number of Lines Covered | 511    |
-| :x: Number of Lines Missed  | 408     |
-| Total Number of Lines   | 919     |
+| Code Coverage %         | 61.4%               |
+| :heavy_check_mark: Number of Lines Covered | 563    |
+| :x: Number of Lines Missed  | 354     |
+| Total Number of Lines   | 917     |
 
 
 ## Details:
@@ -514,40 +514,24 @@
 
 <details>
     <summary>
-:x: SnsConfig.java
+:heavy_check_mark: SnsConfig.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #63
-```
-                    AwsSessionCredentials.create(accessKey, secretKey, sessionToken));
-```
-- Line #66
-```
-                    AwsBasicCredentials.create(accessKey, secretKey));
-```
 </details>
 
     
 
 <details>
     <summary>
-:x: SQSConfig.java
+:heavy_check_mark: SQSConfig.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #108
-```
-                    AwsSessionCredentials.create(accessKey, secretKey, sessionToken));
-```
-- Line #111
-```
-                    AwsBasicCredentials.create(accessKey, secretKey));
-```
 </details>
 
     
@@ -591,14 +575,6 @@
 - Line #82
 ```
                 .build();
-```
-- Line #94
-```
-                    AwsSessionCredentials.create(accessKey, secretKey, sessionToken));
-```
-- Line #97
-```
-                    AwsBasicCredentials.create(accessKey, secretKey));
 ```
 </details>
 
