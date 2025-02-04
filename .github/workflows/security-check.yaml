@@ -18,3 +18,7 @@ jobs:
 
       - name: Run OWASP Dependency-Check
         run: sh ./config/setup-security.sh ${{ secrets.OWASP_FAIL_BUILD_ON_CVSS_LEVEL }}
+
+      # A trick to avoid the the flow to be stuck
+      - name: Confirm Completion
+        run: echo "Security check completed successfully"
