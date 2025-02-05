@@ -33,7 +33,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { Octokit } = require("@octokit/rest");
+            const { Octokit } = require("octokit");
             const octokit = new Octokit({ auth: `${{ secrets.GITHUB_TOKEN }}` });
             octokit.rest.issues.create({
               owner: context.repo.owner,
