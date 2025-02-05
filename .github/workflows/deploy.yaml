@@ -16,8 +16,25 @@ env:
   BUILD_VERSION: ${{ github.event.inputs.app_image_version || github.sha }}
 
 jobs:
+  check-aws-online:
+    name: Check AWS online
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Check AWS online
+        run: aws sts get-caller-identity
+
   build-docker-image:
     name: Build and push Docker image
+    if: success()
+    needs: check-aws-online
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
