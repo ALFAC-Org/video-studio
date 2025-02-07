@@ -20,3 +20,6 @@ RUN chmod +x /usr/local/bin/setup.sh /usr/local/bin/wait-for-it.sh
 
 # Comando para iniciar o LocalStack e executar o script de configuração
 CMD ["sh", "-c", "localstack start -d && /usr/local/bin/wait-for-it.sh localhost:4566 -- /usr/local/bin/setup.sh && tail -f /dev/null"]
+
+# Comando:
+# docker buildx build --platform linux/arm64 -f Dockerfile -t carlohcs/video-studio:latest . --build-arg PROFILE=local --load --no-cache

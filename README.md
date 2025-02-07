@@ -8,6 +8,8 @@ Repositório para o projeto de hackathon (2024 - 7SOAT - Grupo 34) do curso de A
 > 2. A provisão das lambdas [https://github.com/ALFAC-Org/video-serveless-function](https://github.com/ALFAC-Org/video-serveless-function);
 > 2. A provisão deste repositório.
 
+![passos-seguir](docs/passos-provisao.png)
+
 ## Arquitetura
 
 ### Visão Geral
@@ -28,11 +30,15 @@ Veja também no [documento no Miro](https://miro.com/app/board/uXjVKZNCxxM=/?mov
 
 ### Qualidade
 
-A aplicação possui checagem de qualidade do código através da action [https://github.com/ALFAC-Org/video-studio/actions/workflows/unit-tests.yaml](https://github.com/ALFAC-Org/video-studio/actions/workflows/unit-tests.yaml). Qualquer erro na action, o _build_ da aplicação falhará. Uma vez corrigido, o _build_ continuará noralmente.
+A aplicação possui checagem de qualidade do código através da action [Tests](https://github.com/ALFAC-Org/video-studio/actions/workflows/unit-tests.yaml). Qualquer erro na action, o _build_ da aplicação falhará. Uma vez corrigido, o _build_ continuará normalmente.
 
 ### Segurança
 
 A aplicação possui checagem de segurança dos pacotes instalados através da action [Security Check](https://github.com/ALFAC-Org/video-studio/actions/workflows/security-check.yaml). Caso exista algum pacote que precisa ser atualizado e que seja considerado de atualização gravíssima, (nível 10 do [https://hub.docker.com/r/owasp/dependency-check]([https://hub.docker.com/r/owasp/dependency-check])), o _build_ da aplicação falhará. Uma vez corrigido, o _build_ continuará normalmente.
+
+### Privacidade de Dados e LGPD
+
+Uma vez que o usuário faz o _upload_ de um vídeo na plataforma, ele estará concordando com os termos de uso da plataforma. Estes termos de uso estão disponíveis uma vez que a aplicação está rodando em `/api/v1/terms`
 
 ## Como rodar o projeto
 
