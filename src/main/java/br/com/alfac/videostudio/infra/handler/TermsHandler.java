@@ -41,12 +41,17 @@ public class TermsHandler {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> consultarTermosDeUso() throws IOException {
         try {
+            logger.debug("[TermsHandler] Getting terms of use");
+
             Resource resource = new ClassPathResource("static/terms/terms-of-use.json");
+            logger.debug("[TermsHandler] Resource is: {}", resource);
+            
             String content = new String(Files.readAllBytes(resource.getFile().toPath()));
+            logger.debug("[TermsHandler] Content is available: {}", content);
 
             return ResponseEntity.ok(content);
         } catch (IOException e) {
-            logger.info("[TermsHandler] Error to get terms: {}",
+            logger.error("[TermsHandler] Error to get terms: {}",
                         e);
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
