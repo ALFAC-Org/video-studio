@@ -5,7 +5,13 @@ FROM maven:3.8.1-openjdk-17-slim AS build
 WORKDIR /app
 
 # Copia o projeto inteiro para o WORKDIR
-COPY . .
+# COPY . .
+# Copia o arquivo pom.xml para o WORKDIR
+COPY pom.xml .
+
+# Copia o código fonte para o WORKDIR
+COPY src ./src
+COPY config ./config
 
 # Compila o aplicativo com o Maven
 RUN mvn clean install -U -DskipTests
@@ -13,14 +19,13 @@ RUN mvn clean install -U -DskipTests
 # Crie uma imagem baseada na JDK para executar a aplicacao
 FROM openjdk:17-slim
 
-ARG PROFILE=prod
-
 # Define o WORKDIR no container
 WORKDIR /app
 
 # Copia o JAR da aplicacao para o WORKDIR
 COPY --from=build /app/target/*.jar /app/app.jar
 
+ARG PROFILE=prod
 ENV AWS_REGION=us-east-1
 ENV AWS_DEFAULT_REGION=us-east-1
 ENV PROFILE=${PROFILE}

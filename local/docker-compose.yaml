@@ -2,12 +2,13 @@ version: '3'
 services:
 
   videostudio:
-    image: videostudio
+    # image: videostudio
+    # image: carlohcs/studio:1
     build:
       context: ../
       dockerfile: Dockerfile
-      args:
-        - PROFILE=local
+    environment:
+      - PROFILE=local
     container_name: videostudio-container
     ports:
       - "8080:8080"

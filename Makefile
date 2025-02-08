@@ -30,7 +30,7 @@ package:
 
 start-app:
 	@echo "Starting the application"
-	@mvn spring-boot:start
+	@mvn spring-boot:start -U -Dspring-boot.run.profiles=local
 
 stop-app:
 	@echo "Stopping the application"
