@@ -1,5 +1,6 @@
 package br.com.alfac.videostudio.infra.handler;
 
+import br.com.alfac.videostudio.core.application.usecases.ErroProcessamentoVideoUseCase;
 import br.com.alfac.videostudio.infra.config.exception.ApiError;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -7,6 +8,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -22,6 +26,8 @@ import java.nio.file.Files;
 @RequestMapping("/api/v1/terms")
 @Tag(name = "Terms", description = "Métodos relacionados aos termos de uso")
 public class TermsHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(TermsHandler.class);
 
     public TermsHandler() throws IOException {
     }
@@ -40,6 +46,8 @@ public class TermsHandler {
 
             return ResponseEntity.ok(content);
         } catch (IOException e) {
+            logger.info("[TermsHandler] Error to get terms: {}",
+                        e);
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
