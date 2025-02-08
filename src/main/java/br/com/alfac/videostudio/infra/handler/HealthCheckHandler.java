@@ -41,6 +41,7 @@ public class HealthCheckHandler {
     Map<String, String> versions = new HashMap<>();
     versions.put("status", "Aplicação está funcionando. Veja as versões atuais.");
     versions.put("application-version", applicationVersion);
+    versions.put("estamos-na-fina", "UHUUU!");
     return new ResponseEntity<>(versions, HttpStatus.OK);
   }
 }
