@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 
 @RestController
@@ -45,14 +46,14 @@ public class TermsHandler {
 
             Resource resource = new ClassPathResource("static/terms/terms-of-use.json");
             logger.debug("[TermsHandler] Resource is: {}", resource);
-            
-            String content = new String(Files.readAllBytes(resource.getFile().toPath()));
+
+            InputStream inputStream = resource.getInputStream();
+            String content = new String(inputStream.readAllBytes());
             logger.debug("[TermsHandler] Content is available: {}", content);
 
             return ResponseEntity.ok(content);
         } catch (IOException e) {
-            logger.error("[TermsHandler] Error to get terms: {}",
-                        e);
+            logger.error("[TermsHandler] Error to get terms: {}", e);
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
